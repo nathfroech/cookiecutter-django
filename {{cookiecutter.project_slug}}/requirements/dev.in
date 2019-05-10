@@ -1,4 +1,8 @@
--r ./base.txt
+# Requirements that are needed for development or testing environments: test tools, linters, compilers and so on
+
+-r ./base.in
+
+pip-tools  # https://github.com/jazzband/pip-tools
 
 Werkzeug==0.15.2  # https://github.com/pallets/werkzeug
 ipdb==0.12  # https://github.com/gotcha/ipdb

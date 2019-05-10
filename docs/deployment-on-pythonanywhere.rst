@@ -100,7 +100,7 @@ Now go back to the *postactivate* script and set the ``DATABASE_URL`` environmen
     # or
     export DATABASE_URL='sqlite:////home/yourusername/path/to/db.sqlite'
 
-If you're using MySQL, you may need to run ``pip install mysqlclient``, and maybe add ``mysqlclient`` to *requirements/production.txt* too.
+If you're using MySQL, you may need to run ``pip install mysqlclient``, and maybe add ``mysqlclient`` to *requirements/base.in* too.
 
 Now run the migration, and collectstatic:
 

@@ -1,6 +1,7 @@
+# Requirements that are needed only on servers: WSGI server, logging tools like Sentry, etc.
 # PRECAUTION: avoid production dependencies that aren't in development
 
--r ./base.txt
+-r ./base.in
 
 gunicorn==19.9.0  # https://github.com/benoitc/gunicorn
 psycopg2==2.8 --no-binary psycopg2  # https://github.com/psycopg/psycopg2

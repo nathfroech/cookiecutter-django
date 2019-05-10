@@ -12,6 +12,5 @@ pin: True
 # find the ones in the project_slug folder
 requirements:
   - "requirements.txt"
-  - "{{cookiecutter.project_slug}}/requirements/base.txt"
-  - "{{cookiecutter.project_slug}}/requirements/local.txt"
+  - "{{cookiecutter.project_slug}}/requirements/dev.txt"
   - "{{cookiecutter.project_slug}}/requirements/production.txt"
