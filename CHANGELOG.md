@@ -3,9 +3,11 @@ All enhancements and patches to Cookiecutter Django will be documented in this f
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Added `pip-tools` for requirements management (@nathfroech)
+- Added `pre-commit` for running linters against commited changes (@nathfroech)
 ### Changed
 - Updated `.editorconfig` content (@nathfroech)
-- Added `pip-tools` for requirements management (@nathfroech)
 
 ## [2018-02-16]
 ### Changed
