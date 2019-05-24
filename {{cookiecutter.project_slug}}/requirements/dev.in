@@ -4,6 +4,13 @@
 
 pip-tools  # https://github.com/jazzband/pip-tools
 
+# Linters
+pre-commit  # https://github.com/pre-commit/pre-commit/
+yamllint  # https://github.com/adrienverge/yamllint/
+restructuredtext-lint  # https://github.com/twolfson/restructuredtext-lint/
+# Pygments is required for restructuredtext-lint but is not being installed with it
+pygments  # https://bitbucket.org/birkenfeld/pygments-main/src/default/
+
 Werkzeug==0.15.2  # https://github.com/pallets/werkzeug
 ipdb==0.12  # https://github.com/gotcha/ipdb
 Sphinx==2.0.1  # https://github.com/sphinx-doc/sphinx

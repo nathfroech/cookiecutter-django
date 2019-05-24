@@ -7,7 +7,7 @@ import sh
 import yaml
 from binaryornot.check import is_binary
 
-PATTERN = "{{(\s?cookiecutter)[.](.*?)}}"
+PATTERN = r"{{(\s?cookiecutter)[.](.*?)}}"
 RE_OBJ = re.compile(PATTERN)
 
 YN_CHOICES = ["y", "n"]
@@ -103,19 +103,28 @@ def test_project_generation(cookies, context, context_combination):
 
 def test_linting_passes(cookies, context_combination):
     """
-    Generated project should pass flake8 & black.
+    Generated project should pass pre-commit, flake8 & black.
 
     This is parametrized for each combination from ``context_combination`` fixture
     """
     result = cookies.bake(extra_context=context_combination)
+    project_path = str(result.project)
 
     try:
-        sh.flake8(str(result.project))
+        sh.git('init', _cwd=project_path)
+        sh.git('add', '.', _cwd=project_path)
+        sh.pre_commit('install', _cwd=project_path)
+        sh.pre_commit('run', '--all-files', _cwd=project_path)
+    except sh.ErrorReturnCode as e:
+        pytest.fail(e.stdout)
+
+    try:
+        sh.flake8(project_path)
     except sh.ErrorReturnCode as e:
         pytest.fail(e)
 
     try:
-        sh.black("--check", "--diff", "--exclude", "migrations", f"{result.project}/")
+        sh.black("--check", "--diff", "--exclude", "migrations", f"{project_path}/")
     except sh.ErrorReturnCode as e:
         pytest.fail(e)
 
@@ -131,6 +140,6 @@ def test_travis_invokes_pytest(cookies, context):
 
     with open(f"{result.project}/.travis.yml", "r") as travis_yml:
         try:
-            assert yaml.load(travis_yml)["script"] == ["pytest"]
+            assert yaml.load(travis_yml, yaml.FullLoader)["script"] == ["pytest"]
         except yaml.YAMLError as e:
             pytest.fail(e)

@@ -58,4 +58,4 @@ Other Environment Settings
 --------------------------
 
 DJANGO_ACCOUNT_ALLOW_REGISTRATION (=True)
-    Allow enable or disable user registration through `django-allauth` without disabling other characteristics like authentication and account management. (Django Setting: ACCOUNT_ALLOW_REGISTRATION)
+    Allow enable or disable user registration through ``django-allauth`` without disabling other characteristics like authentication and account management. (Django Setting: ACCOUNT_ALLOW_REGISTRATION)

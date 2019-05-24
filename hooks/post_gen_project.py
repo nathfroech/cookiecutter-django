@@ -10,7 +10,9 @@ TODO: ? restrict Cookiecutter Django project initialization to Python 3.x enviro
 from __future__ import print_function
 
 import os
+import pathlib
 import random
+import re
 import shutil
 import string
 
@@ -271,6 +273,29 @@ def remove_node_dockerfile():
     shutil.rmtree(os.path.join("compose", "local", "node"))
 
 
+def clean_file_contents():
+    """Clean generated files from trailing whitespaces and extra newlines."""
+    for file_path in pathlib.Path().absolute().rglob('*'):
+        if file_path.suffix in ('.ico',):
+            continue
+        if file_path.is_file():
+            content = file_path.read_text()
+
+            # Remove trailing whitespaces.
+            content = re.sub(r'[ \t]+\n', '\n', content)
+            # Python and Javascript files may use two empty lines to separate code blocks (classes, etc.). Each
+            # particular case for them will be checked by language-specific linters. For other files one empty line
+            # is enough.
+            if file_path.suffix in ('.py', '.js'):
+                content = re.sub(r'\n{4,}', '\n\n\n', content, flags=re.MULTILINE)
+            else:
+                content = re.sub(r'\n{3,}', '\n\n', content, flags=re.MULTILINE)
+            # Remove extra newlines before end of file.
+            content = re.sub(r'\n{2,}\Z', '\n', content, flags=re.MULTILINE)
+
+            file_path.write_text(content)
+
+
 def main():
     debug = "{{ cookiecutter.debug }}".lower() == "y"
 
@@ -327,6 +352,8 @@ def main():
 
     if "{{ cookiecutter.use_travisci }}".lower() == "n":
         remove_dottravisyml_file()
+
+    clean_file_contents()
 
     print(SUCCESS + "Project initialized, keep up the good work!" + TERMINATOR)
 

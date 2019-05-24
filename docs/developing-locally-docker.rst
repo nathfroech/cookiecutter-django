@@ -97,7 +97,7 @@ The most important thing for us here now is ``env_file`` section enlisting ``./.
         ├── .django
         └── .postgres
 
-By convention, for any service ``sI`` in environment ``e`` (you know ``someenv`` is an environment when there is a ``someenv.yml`` file in the project root), given ``sI`` requires configuration, a ``.envs/.e/.sI`` `service configuration` file exists.
+By convention, for any service ``sI`` in environment ``e`` (you know ``someenv`` is an environment when there is a ``someenv.yml`` file in the project root), given ``sI`` requires configuration, a ``.envs/.e/.sI`` ``service configuration`` file exists.
 
 Consider the aforementioned ``.envs/.local/.postgres``: ::
 

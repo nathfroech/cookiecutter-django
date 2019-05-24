@@ -24,5 +24,3 @@ about: Let us know if something that'd been working has broke
 [//]: # (* Host system configuration: OS, Docker & friends' versions etc.)
 [//]: # (* Project generation options)
 [//]: # (* Logs)
-
-

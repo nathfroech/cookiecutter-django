@@ -2,6 +2,13 @@ cookiecutter==1.6.0
 sh==1.12.14
 binaryornot==0.4.4
 
+# Linters
+pre-commit  # https://github.com/pre-commit/pre-commit/
+yamllint  # https://github.com/adrienverge/yamllint/
+restructuredtext-lint  # https://github.com/twolfson/restructuredtext-lint/
+# Pygments is required for restructuredtext-lint but is not being installed with it
+pygments  # https://bitbucket.org/birkenfeld/pygments-main/src/default/
+
 # Code quality
 # ------------------------------------------------------------------------------
 black

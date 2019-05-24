@@ -6,9 +6,9 @@ update: all
 # configure dependency pinning globally
 # default: True
 # allowed: True, False
-pin: True
+pin: True  # yamllint disable-line rule:truthy
 
-# Specify requirement files by hand, pyup seems to struggle to 
+# Specify requirement files by hand, pyup seems to struggle to
 # find the ones in the project_slug folder
 requirements:
   - "requirements.txt"

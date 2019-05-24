@@ -3,7 +3,7 @@ Docker Remote Debugging
 
 To connect to python remote interpreter inside docker, you have to make sure first, that Pycharm is aware of your docker.
 
-Go to *Settings > Build, Execution, Deployment > Docker*. If you are on linux, you can use docker directly using its socket  `unix:///var/run/docker.sock`, if you are on Windows or Mac, make sure that you have docker-machine installed, then you can simply *Import credentials from Docker Machine*.
+Go to *Settings > Build, Execution, Deployment > Docker*. If you are on linux, you can use docker directly using its socket  ``unix:///var/run/docker.sock``, if you are on Windows or Mac, make sure that you have docker-machine installed, then you can simply *Import credentials from Docker Machine*.
 
 .. image:: images/1.png
 
@@ -21,7 +21,7 @@ Next, you have to add new remote python interpreter, based on already tested dep
 
 .. image:: images/3.png
 
-Switch to *Docker Compose* and select `local.yml` file from directory of your project, next set *Service name* to `django`
+Switch to *Docker Compose* and select ``local.yml`` file from directory of your project, next set *Service name* to ``django``
 
 .. image:: images/4.png
 
@@ -36,12 +36,18 @@ After few seconds, all *Run/Debug Configurations* should be ready to use.
 **Things you can do with provided configuration**:
 
 * run and debug python code
+
 .. image:: images/f1.png
+
 * run and debug tests
+
 .. image:: images/f2.png
 .. image:: images/f3.png
+
 * run and debug migrations or different django management commands
+
 .. image:: images/f4.png
+
 * and many others..
 
 Known issues
@@ -53,9 +59,9 @@ Known issues
 
 This might be fault of your firewall. Take a look on this ticket - https://youtrack.jetbrains.com/issue/PY-18913
 
-* Modified files in `.idea` directory
+* Modified files in ``.idea`` directory
 
-Most of the files from `.idea/` were added to `.gitignore` with a few exceptions, which were made, to provide "ready to go" configuration. After adding remote interpreter some of these files are altered by PyCharm:
+Most of the files from ``.idea/`` were added to ``.gitignore`` with a few exceptions, which were made, to provide "ready to go" configuration. After adding remote interpreter some of these files are altered by PyCharm:
 
 .. image:: images/issue2.png
 

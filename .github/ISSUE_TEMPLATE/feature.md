@@ -20,5 +20,3 @@ about: Propose a new feature
 ## Use case(s) / visualization(s)
 
 [//]: # ("Better to see something once than to hear about it a thousand times.")
-
-
