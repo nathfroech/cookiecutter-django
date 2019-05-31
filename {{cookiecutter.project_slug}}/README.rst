@@ -58,21 +58,20 @@ Running type checks with mypy:
 
   $ mypy {{cookiecutter.project_slug}}
 
-Test coverage
-^^^^^^^^^^^^^
+Tests
+^^^^^
 
-To run the tests, check your test coverage, and generate an HTML coverage report::
+Project uses ``pytest`` for testing.
 
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
+All tests should be placed inside ``tests/`` directory of the corresponding project and (ideally) follow the project
+structure - for example, tests for models from app ``user`` should be located at ``user/tests/test_models.py`` (or
+inside the package ``user/tests/models/``, if there are too many tests).
 
-Running tests with py.test
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+As an alternative, tests may be placed inside ``tests/`` directory at the project's root (for example, if tests are not
+related to any certain app).
 
-::
-
-  $ pytest
+To run tests: ``make test``.
+To run tests and receive a coverage statistics: ``make coverage``.
 
 Live reloading and Sass CSS compilation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
