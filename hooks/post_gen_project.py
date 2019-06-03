@@ -33,70 +33,65 @@ SUCCESS = "\x1b[1;32m [SUCCESS]: "
 DEBUG_VALUE = "debug"
 
 
+PROJECT_ROOT = pathlib.Path.cwd()
+
+
+def clean_files(*files_to_clean: str):
+    for file_name in files_to_clean:
+        PROJECT_ROOT.joinpath(file_name).unlink()
+
+
+def clean_dir(*dir_path_terms: str):
+    dir_path = PROJECT_ROOT.joinpath(*dir_path_terms)
+    if dir_path.is_dir():
+        shutil.rmtree(dir_path)
+
+
 def remove_open_source_files():
-    file_names = ["CONTRIBUTORS.txt", "LICENSE"]
-    for file_name in file_names:
-        os.remove(file_name)
+    clean_files("CONTRIBUTORS.txt", "LICENSE")
 
 
 def remove_gplv3_files():
-    file_names = ["COPYING"]
-    for file_name in file_names:
-        os.remove(file_name)
+    clean_files("COPYING")
 
 
 def remove_pycharm_files():
-    idea_dir_path = ".idea"
-    if os.path.exists(idea_dir_path):
-        shutil.rmtree(idea_dir_path)
-
-    docs_dir_path = os.path.join("docs", "pycharm")
-    if os.path.exists(docs_dir_path):
-        shutil.rmtree(docs_dir_path)
+    clean_dir(".idea")
+    clean_dir("docs", "pycharm")
 
 
 def remove_docker_files():
-    shutil.rmtree("compose")
+    clean_dir("compose")
 
-    file_names = ["local.yml", "production.yml", ".dockerignore"]
-    for file_name in file_names:
-        os.remove(file_name)
+    clean_files("local.yml", "production.yml", ".dockerignore")
 
 
 def remove_utility_files():
-    shutil.rmtree("utility")
+    clean_dir("utility")
 
 
 def remove_heroku_files():
-    file_names = ["Procfile", "runtime.txt", "requirements.txt"]
-    for file_name in file_names:
-        if (
-            file_name == "requirements.txt"
-            and "{{ cookiecutter.use_travisci }}".lower() == "y"
-        ):
-            # don't remove the file if we are using travisci but not using heroku
-            continue
-        os.remove(file_name)
+    file_names = ["Procfile", "runtime.txt"]
+    if "{{ cookiecutter.use_travisci }}".lower() != "y":
+        # don't remove the file if we are using travisci but not using heroku
+        file_names.append("requirements.txt")
+    clean_files(*file_names)
 
 
 def remove_gulp_files():
-    file_names = ["gulpfile.js"]
-    for file_name in file_names:
-        os.remove(file_name)
+    clean_files("gulpfile.js")
 
 
 def remove_packagejson_file():
-    file_names = ["package.json"]
-    for file_name in file_names:
-        os.remove(file_name)
+    clean_files("package.json")
 
 
 def remove_celery_app():
-    shutil.rmtree(os.path.join("{{ cookiecutter.project_slug }}", "taskapp"))
+    clean_dir("{{ cookiecutter.project_slug }}", "taskapp")
 
 
 def remove_dottravisyml_file():
-    os.remove(".travis.yml")
+    clean_files(".travis.yml")
 
 
 def append_to_project_gitignore(path):
@@ -220,12 +215,6 @@ def set_celery_flower_password(file_path, value=None):
     return celery_flower_password
 
 
-def append_to_gitignore_file(s):
-    with open(".gitignore", "a") as gitignore_file:
-        gitignore_file.write(s)
-        gitignore_file.write(os.linesep)
-
-
 def set_flags_in_envs(postgres_user, celery_flower_user, debug=False):
     local_django_envs_path = os.path.join(".envs", ".local", ".django")
     production_django_envs_path = os.path.join(".envs", ".production", ".django")
@@ -275,7 +264,7 @@ def remove_node_dockerfile():
 
 def clean_file_contents():
     """Clean generated files from trailing whitespaces and extra newlines."""
-    for file_path in pathlib.Path().absolute().rglob('*'):
+    for file_path in PROJECT_ROOT.rglob('*'):
         if file_path.suffix in ('.ico',):
             continue
         if file_path.is_file():
@@ -334,10 +323,10 @@ def main():
             )
         remove_envs_and_associated_files()
     else:
-        append_to_gitignore_file(".env")
-        append_to_gitignore_file(".envs/*")
+        append_to_project_gitignore(".env")
+        append_to_project_gitignore(".envs/*")
         if "{{ cookiecutter.keep_local_envs_in_vcs }}".lower() == "y":
-            append_to_gitignore_file("!.envs/.local/")
+            append_to_project_gitignore("!.envs/.local/")
 
     if "{{ cookiecutter.js_task_runner}}".lower() == "none":
         remove_gulp_files()

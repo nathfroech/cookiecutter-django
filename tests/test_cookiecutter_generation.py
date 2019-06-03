@@ -86,29 +86,21 @@ def check_paths(paths):
 
 def test_project_generation(cookies, context, context_combination):
     """
-    Test that project is generated and fully rendered.
+    Test that project is generated, fully rendered and passes pre-commit & flake8.
 
     This is parametrized for each combination from ``context_combination`` fixture
     """
     result = cookies.bake(extra_context={**context, **context_combination})
+    project_path = str(result.project)
+
     assert result.exit_code == 0
     assert result.exception is None
     assert result.project.basename == context["project_slug"]
     assert result.project.isdir()
 
-    paths = build_files_list(str(result.project))
+    paths = build_files_list(project_path)
     assert paths
     check_paths(paths)
-
-
-def test_linting_passes(cookies, context_combination):
-    """
-    Generated project should pass pre-commit, flake8 & black.
-
-    This is parametrized for each combination from ``context_combination`` fixture
-    """
-    result = cookies.bake(extra_context=context_combination)
-    project_path = str(result.project)
 
     try:
         sh.git('init', _cwd=project_path)
@@ -124,7 +116,7 @@ def test_linting_passes(cookies, context_combination):
         pytest.fail(e)
 
     try:
-        sh.black("--check", "--diff", "--exclude", "migrations", f"{project_path}/")
+        sh.black("--check", "--diff", "--exclude", "migrations|settings", f"{project_path}/")
     except sh.ErrorReturnCode as e:
         pytest.fail(e)
 
