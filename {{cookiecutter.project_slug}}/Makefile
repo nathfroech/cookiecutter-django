@@ -8,4 +8,4 @@ test:
 
 .PHONY: coverage
 coverage:
-	@pytest -c setup.cfg --cov-config setup.cfg -s --cov-report term --cov {{ cookiecutter.project_slug }}
+	@pytest -c setup.cfg --cov-config setup.cfg -s --cov-report term --cov .
