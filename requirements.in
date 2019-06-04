@@ -13,6 +13,7 @@ pygments  # https://bitbucket.org/birkenfeld/pygments-main/src/default/
 pytest
 pytest_cases
 pytest-cookies
+PyHamcrest
 
 # Code quality
 # ------------------------------------------------------------------------------

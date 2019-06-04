@@ -2,6 +2,7 @@ import os
 import re
 
 import pytest
+from hamcrest import assert_that, equal_to, is_, none
 from pytest_cases import pytest_fixture_plus
 import sh
 import yaml
@@ -74,14 +75,14 @@ def check_paths(paths):
     used by other tests cases
     """
     # Assert that no match is found in any of the files
+    message_template = "cookiecutter variable not replaced in {}"
     for path in paths:
         if is_binary(path):
             continue
 
         for line in open(path, "r"):
             match = RE_OBJ.search(line)
-            msg = "cookiecutter variable not replaced in {}"
-            assert match is None, msg.format(path)
+            assert_that(match, is_(none()), message_template.format(path))
 
 
 def test_project_generation(cookies, context, context_combination):
@@ -93,13 +94,13 @@ def test_project_generation(cookies, context, context_combination):
     result = cookies.bake(extra_context={**context, **context_combination})
     project_path = str(result.project)
 
-    assert result.exit_code == 0
-    assert result.exception is None
-    assert result.project.basename == context["project_slug"]
-    assert result.project.isdir()
+    assert_that(result.exit_code, is_(equal_to(0)))
+    assert_that(result.exception, is_(none()))
+    assert_that(result.project.basename, is_(equal_to(context["project_slug"])))
+    assert_that(result.project.isdir())
 
     paths = build_files_list(project_path)
-    assert paths
+    assert_that(paths)
     check_paths(paths)
 
     try:
@@ -125,13 +126,13 @@ def test_travis_invokes_pytest(cookies, context):
     context.update({"use_travisci": "y"})
     result = cookies.bake(extra_context=context)
 
-    assert result.exit_code == 0
-    assert result.exception is None
-    assert result.project.basename == context["project_slug"]
-    assert result.project.isdir()
+    assert_that(result.exit_code, is_(equal_to(0)))
+    assert_that(result.exception, is_(none()))
+    assert_that(result.project.basename, is_(equal_to(context["project_slug"])))
+    assert_that(result.project.isdir())
 
     with open(f"{result.project}/.travis.yml", "r") as travis_yml:
         try:
-            assert yaml.load(travis_yml, yaml.FullLoader)["script"] == ["pytest"]
+            assert_that(yaml.load(travis_yml, yaml.FullLoader)["script"], is_(equal_to(["pytest"])))
         except yaml.YAMLError as e:
             pytest.fail(e)

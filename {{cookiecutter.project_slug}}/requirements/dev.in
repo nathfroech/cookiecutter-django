@@ -15,6 +15,7 @@ pygments  # https://bitbucket.org/birkenfeld/pygments-main/src/default/
 pytest
 pytest-cov
 pytest-django
+PyHamcrest
 
 Werkzeug==0.15.2  # https://github.com/pallets/werkzeug
 ipdb==0.12  # https://github.com/gotcha/ipdb

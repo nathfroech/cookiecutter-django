@@ -70,6 +70,11 @@ inside the package ``user/tests/models/``, if there are too many tests).
 As an alternative, tests may be placed inside ``tests/`` directory at the project's root (for example, if tests are not
 related to any certain app).
 
+For assertions either default python's ``assert`` can be used, or more specific assertions from PyHamcrest_ - may be
+useful for complex assertions and just more readable.
+
+.. _PyHamcrest: https://pyhamcrest.readthedocs.io/en/release-1.8/library/
+
 To run tests: ``make test``.
 To run tests and receive a coverage statistics: ``make coverage``.
 
