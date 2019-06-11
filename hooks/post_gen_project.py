@@ -259,7 +259,7 @@ def remove_node_dockerfile():
 def clean_file_contents():
     """Clean generated files from trailing whitespaces and extra newlines."""
     for file_path in PROJECT_ROOT.rglob('*'):
-        if file_path.suffix in ('.ico', '.pyc'):
+        if file_path.suffix in ('.ico',):
             continue
         if file_path.is_file():
             file_content = file_path.read_text()

@@ -1,4 +1,5 @@
 import pytest
+from hamcrest import assert_that, equal_to, is_
 
 from django.conf import settings
 from django.test import RequestFactory
@@ -16,7 +17,8 @@ class TestUserUpdateView:
 
         view.request = request
 
-        assert view.get_success_url() == '/users/{0}/'.format(user.username)
+        expected_url = '/users/{0}/'.format(user.username)
+        assert_that(view.get_success_url(), is_(equal_to(expected_url)))
 
     def test_get_object(self, user: settings.AUTH_USER_MODEL, request_factory: RequestFactory):
         view = UserUpdateView()
@@ -25,7 +27,7 @@ class TestUserUpdateView:
 
         view.request = request
 
-        assert view.get_object() == user
+        assert_that(view.get_object(), is_(equal_to(user)))
 
 
 class TestUserRedirectView:
@@ -36,4 +38,5 @@ class TestUserRedirectView:
 
         view.request = request
 
-        assert view.get_redirect_url() == '/users/{0}/'.format(user.username)
+        expected_url = '/users/{0}/'.format(user.username)
+        assert_that(view.get_redirect_url(), is_(equal_to(expected_url)))

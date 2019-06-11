@@ -1,9 +1,9 @@
 import pytest
+from model_mommy import mommy
 
-from django.conf import settings
 from django.test import RequestFactory
 
-from {{ cookiecutter.project_slug }}.users.tests.factories import UserFactory
+from {{ cookiecutter.project_slug }}.users.models import User
 
 
 @pytest.fixture(autouse=True)
@@ -12,8 +12,8 @@ def media_storage(settings, tmpdir):
 
 
 @pytest.fixture
-def user() -> settings.AUTH_USER_MODEL:
-    return UserFactory()
+def user() -> User:
+    return mommy.make(User)
 
 
 @pytest.fixture

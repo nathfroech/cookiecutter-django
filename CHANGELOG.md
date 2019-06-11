@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Updated `pytest` configuration (@nathfroech)
 - Updated `flake8` configuration to rules based on
  [wemake.services linter](https://github.com/wemake-services/wemake-python-styleguide) (@nathfroech)
+ - Switched from `factory-boy` to `model-mommy` (@nathfroech)
 
 ## [2018-02-16]
 ### Changed

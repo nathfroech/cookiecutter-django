@@ -84,3 +84,4 @@ CELERY_TASK_EAGER_PROPAGATES = True
 {%- endif %}
 # Your stuff...
 # ------------------------------------------------------------------------------
+AUTH_PASSWORD_VALIDATORS = []

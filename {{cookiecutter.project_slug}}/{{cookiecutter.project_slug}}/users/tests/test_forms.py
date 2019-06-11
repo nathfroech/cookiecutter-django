@@ -1,36 +1,34 @@
 import pytest
+from hamcrest import assert_that, equal_to, has_key, has_length, is_
+from model_mommy import mommy
 
 from {{ cookiecutter.project_slug }}.users.forms import UserCreationForm
-from {{ cookiecutter.project_slug }}.users.tests.factories import UserFactory
+from {{ cookiecutter.project_slug }}.users.models import User
 
 pytestmark = pytest.mark.django_db
 
 
 class TestUserCreationForm:
-    def test_clean_username(self):
-        # A user with proto_user params does not exist yet.
-        proto_user = UserFactory.build()
-
+    def test_clean_username_of_nonexistent_user(self):
         form = UserCreationForm({
-            'username': proto_user.username,
-            'password1': proto_user._password,
-            'password2': proto_user._password,
+            'username': 'user',
+            'password1': 'pwd',
+            'password2': 'pwd',
         })
 
-        assert form.is_valid()
-        assert form.clean_username() == proto_user.username
+        assert_that(form.is_valid())
+        assert_that(form.cleaned_data['username'], is_(equal_to('user')))
 
-        # Creating a user.
-        form.save()
+    def test_clean_username_of_existing_user(self):
+        mommy.make(User, username='user')
 
-        # The user with proto_user params already exists,
-        # hence cannot be created.
+        # The user with proto_user params already exists, hence cannot be created.
         form = UserCreationForm({
-            'username': proto_user.username,
-            'password1': proto_user._password,
-            'password2': proto_user._password,
+            'username': 'user',
+            'password1': 'pwd',
+            'password2': 'pwd',
         })
 
-        assert not form.is_valid()
-        assert len(form.errors) == 1
-        assert 'username' in form.errors
+        assert_that(not form.is_valid())
+        assert_that(form.errors, has_length(1))
+        assert_that(form.errors, has_key('username'))

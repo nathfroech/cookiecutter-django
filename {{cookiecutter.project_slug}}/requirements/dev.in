@@ -21,6 +21,7 @@ pytest
 pytest-cov
 pytest-django
 PyHamcrest
+model-mommy
 
 Werkzeug==0.15.2  # https://github.com/pallets/werkzeug
 ipdb==0.12  # https://github.com/gotcha/ipdb
@@ -44,8 +45,6 @@ pylint-celery==0.3  # https://github.com/PyCQA/pylint-celery
 
 # Django
 # ------------------------------------------------------------------------------
-factory-boy==2.11.1  # https://github.com/FactoryBoy/factory_boy
-
 django-debug-toolbar==1.11  # https://github.com/jazzband/django-debug-toolbar
 django-extensions==2.1.6  # https://github.com/django-extensions/django-extensions
 django-coverage-plugin==1.6.0  # https://github.com/nedbat/django_coverage_plugin
