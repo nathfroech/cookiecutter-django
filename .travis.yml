@@ -15,8 +15,6 @@ matrix:
   include:
     - name: Tox Test
       script: tox -e py36
-    - name: Black template
-      script: tox -e black
     - name: Basic Docker
       script: sh tests/test_docker.sh
     - name: Docker with Celery

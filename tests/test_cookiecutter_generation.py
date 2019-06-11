@@ -2,42 +2,42 @@ import os
 import re
 
 import pytest
-from hamcrest import assert_that, equal_to, is_, none
-from pytest_cases import pytest_fixture_plus
 import sh
 import yaml
 from binaryornot.check import is_binary
+from hamcrest import assert_that, equal_to, is_, none
+from pytest_cases import pytest_fixture_plus
 
-PATTERN = r"{{(\s?cookiecutter)[.](.*?)}}"
+PATTERN = r'{{(\s?cookiecutter)[.](.*?)}}'
 RE_OBJ = re.compile(PATTERN)
 
-YN_CHOICES = ["y", "n"]
-CLOUD_CHOICES = ["AWS", "GCE"]
+YN_CHOICES = ['y', 'n']
+CLOUD_CHOICES = ['AWS', 'GCE']
 
 
 @pytest.fixture
 def context():
     return {
-        "project_name": "My Test Project",
-        "project_slug": "my_test_project",
-        "author_name": "Test Author",
-        "email": "test@example.com",
-        "description": "A short description of the project.",
-        "domain_name": "example.com",
-        "version": "0.1.0",
-        "timezone": "UTC",
+        'project_name': 'My Test Project',
+        'project_slug': 'my_test_project',
+        'author_name': 'Test Author',
+        'email': 'test@example.com',
+        'description': 'A short description of the project.',
+        'domain_name': 'example.com',
+        'version': '0.1.0',
+        'timezone': 'UTC',
     }
 
 
-@pytest_fixture_plus
-@pytest.mark.parametrize("windows", YN_CHOICES, ids=lambda yn: f"win:{yn}")
-@pytest.mark.parametrize("use_docker", YN_CHOICES, ids=lambda yn: f"docker:{yn}")
-@pytest.mark.parametrize("use_celery", YN_CHOICES, ids=lambda yn: f"celery:{yn}")
-@pytest.mark.parametrize("use_mailhog", YN_CHOICES, ids=lambda yn: f"mailhog:{yn}")
-@pytest.mark.parametrize("use_sentry", YN_CHOICES, ids=lambda yn: f"sentry:{yn}")
-@pytest.mark.parametrize("use_compressor", YN_CHOICES, ids=lambda yn: f"cmpr:{yn}")
-@pytest.mark.parametrize("use_whitenoise", YN_CHOICES, ids=lambda yn: f"wnoise:{yn}")
-@pytest.mark.parametrize("cloud_provider", CLOUD_CHOICES, ids=lambda yn: f"cloud:{yn}")
+@pytest_fixture_plus  # noqa: Z211,Z216
+@pytest.mark.parametrize('windows', YN_CHOICES, ids=lambda yn: 'win:{0}'.format(yn))
+@pytest.mark.parametrize('use_docker', YN_CHOICES, ids=lambda yn: 'docker:{0}'.format(yn))
+@pytest.mark.parametrize('use_celery', YN_CHOICES, ids=lambda yn: 'celery:{0}'.format(yn))
+@pytest.mark.parametrize('use_mailhog', YN_CHOICES, ids=lambda yn: 'mailhog:{0}'.format(yn))
+@pytest.mark.parametrize('use_sentry', YN_CHOICES, ids=lambda yn: 'sentry:{0}'.format(yn))
+@pytest.mark.parametrize('use_compressor', YN_CHOICES, ids=lambda yn: 'cmpr:{0}'.format(yn))
+@pytest.mark.parametrize('use_whitenoise', YN_CHOICES, ids=lambda yn: 'wnoise:{0}'.format(yn))
+@pytest.mark.parametrize('cloud_provider', CLOUD_CHOICES, ids=lambda yn: 'cloud:{0}'.format(yn))
 def context_combination(
     windows,
     use_docker,
@@ -50,14 +50,14 @@ def context_combination(
 ):
     """Fixture that parametrize the function where it's used."""
     return {
-        "windows": windows,
-        "use_docker": use_docker,
-        "use_compressor": use_compressor,
-        "use_celery": use_celery,
-        "use_mailhog": use_mailhog,
-        "use_sentry": use_sentry,
-        "use_whitenoise": use_whitenoise,
-        "cloud_provider": cloud_provider,
+        'windows': windows,
+        'use_docker': use_docker,
+        'use_compressor': use_compressor,
+        'use_celery': use_celery,
+        'use_mailhog': use_mailhog,
+        'use_sentry': use_sentry,
+        'use_whitenoise': use_whitenoise,
+        'cloud_provider': cloud_provider,
     }
 
 
@@ -71,33 +71,31 @@ def build_files_list(root_dir):
 
 
 def check_paths(paths):
-    """Method to check all paths have correct substitutions,
-    used by other tests cases
-    """
+    """Check all paths have correct substitutions, used by other tests cases."""
     # Assert that no match is found in any of the files
-    message_template = "cookiecutter variable not replaced in {}"
+    message_template = 'cookiecutter variable not replaced in {0}'
     for path in paths:
         if is_binary(path):
             continue
 
-        for line in open(path, "r"):
+        for line in open(path, 'r'):
             match = RE_OBJ.search(line)
             assert_that(match, is_(none()), message_template.format(path))
 
 
-def test_project_generation(cookies, context, context_combination):
+def test_project_generation(cookies, context, context_combination):  # noqa: Z213
     """
-    Test that project is generated, fully rendered and passes pre-commit & flake8.
+    Test that project is generated, fully rendered and passes pre-commit.
 
     This is parametrized for each combination from ``context_combination`` fixture
     """
-    result = cookies.bake(extra_context={**context, **context_combination})
-    project_path = str(result.project)
+    baked_result = cookies.bake(extra_context={**context, **context_combination})
+    project_path = str(baked_result.project)
 
-    assert_that(result.exit_code, is_(equal_to(0)))
-    assert_that(result.exception, is_(none()))
-    assert_that(result.project.basename, is_(equal_to(context["project_slug"])))
-    assert_that(result.project.isdir())
+    assert_that(baked_result.exit_code, is_(equal_to(0)))
+    assert_that(baked_result.exception, is_(none()))
+    assert_that(baked_result.project.basename, is_(equal_to(context['project_slug'])))
+    assert_that(baked_result.project.isdir())
 
     paths = build_files_list(project_path)
     assert_that(paths)
@@ -108,31 +106,22 @@ def test_project_generation(cookies, context, context_combination):
         sh.git('add', '.', _cwd=project_path)
         sh.pre_commit('install', _cwd=project_path)
         sh.pre_commit('run', '--all-files', _cwd=project_path)
-    except sh.ErrorReturnCode as e:
-        pytest.fail(e.stdout)
-
-    try:
-        sh.flake8(project_path)
-    except sh.ErrorReturnCode as e:
-        pytest.fail(e)
-
-    try:
-        sh.black("--check", "--diff", "--exclude", "migrations|settings", f"{project_path}/")
-    except sh.ErrorReturnCode as e:
-        pytest.fail(e)
+    except sh.ErrorReturnCode as error:
+        pytest.fail(error.stdout)
 
 
 def test_travis_invokes_pytest(cookies, context):
-    context.update({"use_travisci": "y"})
-    result = cookies.bake(extra_context=context)
+    context.update({'use_travisci': 'y'})
+    baked_result = cookies.bake(extra_context=context)
 
-    assert_that(result.exit_code, is_(equal_to(0)))
-    assert_that(result.exception, is_(none()))
-    assert_that(result.project.basename, is_(equal_to(context["project_slug"])))
-    assert_that(result.project.isdir())
+    assert_that(baked_result.exit_code, is_(equal_to(0)))
+    assert_that(baked_result.exception, is_(none()))
+    assert_that(baked_result.project.basename, is_(equal_to(context['project_slug'])))
+    assert_that(baked_result.project.isdir())
 
-    with open(f"{result.project}/.travis.yml", "r") as travis_yml:
+    with open('{0}/.travis.yml'.format(baked_result.project), 'r') as travis_yml:
         try:
-            assert_that(yaml.load(travis_yml, yaml.FullLoader)["script"], is_(equal_to(["pytest"])))
-        except yaml.YAMLError as e:
-            pytest.fail(e)
+            travis_script = yaml.full_load(travis_yml)['script']
+            assert_that(travis_script, is_(equal_to(['pytest'])))
+        except yaml.YAMLError as error:
+            pytest.fail(error)

@@ -9,16 +9,17 @@ restructuredtext-lint  # https://github.com/twolfson/restructuredtext-lint/
 # Pygments is required for restructuredtext-lint but is not being installed with it
 pygments  # https://bitbucket.org/birkenfeld/pygments-main/src/default/
 
+wemake-python-styleguide
+flake8-django
+yesqa
+
+
 # Test tools
 pytest
 pytest_cases
 pytest-cookies
 PyHamcrest
 
-# Code quality
-# ------------------------------------------------------------------------------
-black
-flake8
 
 # Testing
 # ------------------------------------------------------------------------------

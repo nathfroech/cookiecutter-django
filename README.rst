@@ -16,9 +16,9 @@ Cookiecutter Django
     :target: https://www.codetriage.com/pydanny/cookiecutter-django
     :alt: Code Helpers Badge
 
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/ambv/black
-    :alt: Code style: black
+.. image:: https://img.shields.io/badge/style-wemake-000000.svg
+    :target: https://github.com/wemake-services/wemake-python-styleguide
+    :alt: wemake.services code style
 
 Powered by Cookiecutter_, Cookiecutter Django is a framework for jumpstarting
 production-ready Django projects quickly.

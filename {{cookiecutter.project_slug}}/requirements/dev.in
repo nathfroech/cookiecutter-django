@@ -11,6 +11,11 @@ restructuredtext-lint  # https://github.com/twolfson/restructuredtext-lint/
 # Pygments is required for restructuredtext-lint but is not being installed with it
 pygments  # https://bitbucket.org/birkenfeld/pygments-main/src/default/
 
+wemake-python-styleguide
+flake8-django
+yesqa
+
+
 # Tests
 pytest
 pytest-cov
@@ -32,9 +37,6 @@ mypy==0.701  # https://github.com/python/mypy
 
 # Code quality
 # ------------------------------------------------------------------------------
-flake8==3.7.5  # https://github.com/PyCQA/flake8
-coverage==4.5.3  # https://github.com/nedbat/coveragepy
-black==19.3b0  # https://github.com/ambv/black
 pylint-django==2.0.9  # https://github.com/PyCQA/pylint-django
 {%- if cookiecutter.use_celery == 'y' %}
 pylint-celery==0.3  # https://github.com/PyCQA/pylint-celery

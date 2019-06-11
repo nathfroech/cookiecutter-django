@@ -11,13 +11,11 @@ class TestUserCreationForm:
         # A user with proto_user params does not exist yet.
         proto_user = UserFactory.build()
 
-        form = UserCreationForm(
-            {
-                "username": proto_user.username,
-                "password1": proto_user._password,
-                "password2": proto_user._password,
-            }
-        )
+        form = UserCreationForm({
+            'username': proto_user.username,
+            'password1': proto_user._password,
+            'password2': proto_user._password,
+        })
 
         assert form.is_valid()
         assert form.clean_username() == proto_user.username
@@ -27,14 +25,12 @@ class TestUserCreationForm:
 
         # The user with proto_user params already exists,
         # hence cannot be created.
-        form = UserCreationForm(
-            {
-                "username": proto_user.username,
-                "password1": proto_user._password,
-                "password2": proto_user._password,
-            }
-        )
+        form = UserCreationForm({
+            'username': proto_user.username,
+            'password1': proto_user._password,
+            'password2': proto_user._password,
+        })
 
         assert not form.is_valid()
         assert len(form.errors) == 1
-        assert "username" in form.errors
+        assert 'username' in form.errors

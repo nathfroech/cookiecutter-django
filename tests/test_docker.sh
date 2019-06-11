@@ -19,8 +19,8 @@ cd my_awesome_project
 # run the project's type checks
 docker-compose -f local.yml run django mypy my_awesome_project
 
-# Run black with --check option
-docker-compose -f local.yml run django black --check --diff  --exclude 'migrations' ./
+# run linters
+docker-compose -f local.yml run django pre-commit run --all-files
 
 # run the project's tests
 docker-compose -f local.yml run django pytest

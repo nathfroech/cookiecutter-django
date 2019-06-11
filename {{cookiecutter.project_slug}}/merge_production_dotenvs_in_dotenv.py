@@ -5,12 +5,12 @@ from typing import Sequence
 import pytest
 
 ROOT_DIR_PATH = pathlib.Path(__file__).parent
-PRODUCTION_DOTENVS_DIR_PATH = ROOT_DIR_PATH / ".envs" / ".production"
+PRODUCTION_DOTENVS_DIR_PATH = ROOT_DIR_PATH / '.envs' / '.production'
 PRODUCTION_DOTENV_FILE_PATHS = [
-    PRODUCTION_DOTENVS_DIR_PATH / ".django",
-    PRODUCTION_DOTENVS_DIR_PATH / ".postgres",
+    PRODUCTION_DOTENVS_DIR_PATH / '.django',
+    PRODUCTION_DOTENVS_DIR_PATH / '.postgres',
 ]
-DOTENV_FILE_PATH = ROOT_DIR_PATH / ".env"
+DOTENV_FILE_PATH = ROOT_DIR_PATH / '.env'
 
 
 def merge(
@@ -18,7 +18,7 @@ def merge(
     merged_file_paths: Sequence[pathlib.Path],
     append_linesep: bool = True,
 ) -> None:
-    with output_file_path.open("w") as output_file:
+    with output_file_path.open('w') as output_file:
         for merged_file_path in merged_file_paths:
             merged_file_content = merged_file_path.read_text()
             output_file.write(merged_file_content)
@@ -30,19 +30,19 @@ def main():
     merge(DOTENV_FILE_PATH, PRODUCTION_DOTENV_FILE_PATHS)
 
 
-@pytest.mark.parametrize("merged_file_count", range(3))
-@pytest.mark.parametrize("append_linesep", [True, False])
+@pytest.mark.parametrize('merged_file_count', range(3))  # noqa: Z210
+@pytest.mark.parametrize('append_linesep', [True, False])
 def test_merge(tmpdir_factory, merged_file_count: int, append_linesep: bool):
     tmp_dir_path = pathlib.Path(tmpdir_factory.getbasetemp())
 
-    output_file_path = tmp_dir_path / ".env"
+    output_file_path = tmp_dir_path / '.env'
 
-    expected_output_file_content = ""
+    expected_output_file_content = ''
     merged_file_paths = []
-    for i in range(merged_file_count):
-        merged_file_ord = i + 1
+    for file_number in range(merged_file_count):
+        merged_file_ord = file_number + 1
 
-        merged_filename = ".service{}".format(merged_file_ord)
+        merged_filename = '.service{0}'.format(merged_file_ord)
         merged_file_path = tmp_dir_path / merged_filename
 
         merged_file_content = merged_filename * merged_file_ord
@@ -58,8 +58,8 @@ def test_merge(tmpdir_factory, merged_file_count: int, append_linesep: bool):
 
     actual_output_file_content = output_file_path.read_text()
 
-    assert actual_output_file_content == expected_output_file_content
+    assert actual_output_file_content == expected_output_file_content  # noqa: S101
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
