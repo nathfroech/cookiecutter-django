@@ -2,6 +2,10 @@
 update_requirements:
 	bash helpers/update_requirements.sh
 
+.PHONY: lint
+lint:
+	@pre-commit run --all-files
+
 .PHONY: test
 test:
 	@pytest -c setup.cfg

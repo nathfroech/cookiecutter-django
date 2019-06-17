@@ -49,6 +49,31 @@ Setting Up Your Users
 
 For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
 
+Linting
+^^^^^^^
+
+EditorConfig
+============
+There is ``.editorconfig`` file at the project root, which describes some basic rules for IDE. PyCharm supports it out
+of the box, for other IDEs you may have to install a plugin.
+
+Visit https://editorconfig.org/ for additional information.
+
+Commit hooks
+============
+You may run linters after every commit so that they prevent committing code that has some problems. To do this, execute
+``pre-commit install``.
+
+This will install all hooks, described at configuration file ``.pre-commit-config.yaml``.
+
+If you wish to run all checks manually, execute ``pre-commit run --all-files`` (or ``make lint``).
+For running only a single specific check use ``pre-commit run <hook_id> --all-files`` (you can find hook id of the
+desired check at ``.pre-commit-config.yaml``).
+
+Note that ``pre-commit`` checks only files that are tracked by ``git``.
+
+You can find tool documentation at https://pre-commit.com/.
+
 Type checks
 ^^^^^^^^^^^
 
