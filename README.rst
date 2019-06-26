@@ -52,7 +52,6 @@ Features
 * Procfile_ for deploying to Heroku
 * Instructions for deploying to PythonAnywhere_
 * Run tests with pytest
-* Customizable PostgreSQL version
 
 .. _`maintained Foundation fork`: https://github.com/Parbhat/cookiecutter-django-foundation
 
@@ -89,7 +88,7 @@ Constraints
 -----------
 
 * Only maintained 3rd party libraries are used.
-* Uses PostgreSQL everywhere (9.4 - 10.5)
+* Uses PostgreSQL everywhere
 * Environment variables for configuration (This won't work with Apache/mod_wsgi).
 
 Support this Project!
@@ -168,16 +167,6 @@ Answer the prompts with your own desired options_. For example::
     use_docker [n]: n
     use_heroku [n]: y
     use_compressor [n]: y
-    Select postgresql_version:
-    1 - 10.5
-    2 - 10.4
-    3 - 10.3
-    4 - 10.2
-    5 - 10.1
-    6 - 9.6
-    7 - 9.5
-    8 - 9.4
-    Choose from 1, 2, 3, 4, 5, 6, 7, 8 [1]: 1
     Select js_task_runner:
     1 - None
     2 - Gulp
