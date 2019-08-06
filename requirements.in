@@ -3,11 +3,11 @@ sh==1.12.14
 binaryornot==0.4.4
 
 # Linters
-pre-commit  # https://github.com/pre-commit/pre-commit/
-yamllint  # https://github.com/adrienverge/yamllint/
-restructuredtext-lint  # https://github.com/twolfson/restructuredtext-lint/
+pre-commit
+yamllint
+restructuredtext-lint
 # Pygments is required for restructuredtext-lint but is not being installed with it
-pygments  # https://bitbucket.org/birkenfeld/pygments-main/src/default/
+pygments
 
 wemake-python-styleguide
 flake8-django
@@ -25,3 +25,7 @@ PyHamcrest
 # ------------------------------------------------------------------------------
 tox==3.9.0
 pyyaml==5.1
+
+
+# These requirements are from project template dir and needed for proper tests work only
+django

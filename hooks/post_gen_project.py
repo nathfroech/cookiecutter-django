@@ -9,7 +9,7 @@ NOTE:
 
 TODO: ? restrict Cookiecutter Django project initialization to Python 3.x environments only
 """
-from __future__ import print_function  # noqa: Z422
+from __future__ import print_function  # noqa: WPS422
 
 import os
 import pathlib
@@ -36,6 +36,10 @@ DEBUG_VALUE = 'debug'
 
 
 PROJECT_ROOT = pathlib.Path.cwd()
+
+
+def rename_setup_cfg():
+    PROJECT_ROOT.joinpath('_setup.cfg').rename('setup.cfg')
 
 
 def clean_files(*files_to_clean: str):
@@ -130,7 +134,7 @@ def generate_random_string(
     return ''.join([random.choice(symbols) for _ in range(length)])
 
 
-def set_flag(file_path, flag, value=None, formatted=None, *args, **kwargs):  # noqa: Z110,Z211
+def set_flag(file_path, flag, value=None, formatted=None, *args, **kwargs):  # noqa: WPS211
     if value is None:
         random_string = generate_random_string(*args, **kwargs)
         if random_string is None:
@@ -141,9 +145,9 @@ def set_flag(file_path, flag, value=None, formatted=None, *args, **kwargs):  # n
             random_string = flag
         if formatted is not None:
             random_string = formatted.format(random_string)
-        value = random_string  # noqa: Z110
+        value = random_string
 
-    with open(file_path, 'r+') as file:  # noqa: Z110
+    with open(file_path, 'r+') as file:
         file_contents = file.read().replace(flag, value)
         file.seek(0)
         file.write(file_contents)
@@ -153,71 +157,65 @@ def set_flag(file_path, flag, value=None, formatted=None, *args, **kwargs):  # n
 
 
 def set_django_secret_key(file_path):
-    django_secret_key = set_flag(
+    return set_flag(
         file_path,
         '!!!SET DJANGO_SECRET_KEY!!!',
-        length=64,  # noqa: Z432
+        length=64,  # noqa: WPS432
         using_digits=True,
         using_ascii_letters=True,
     )
-    return django_secret_key
 
 
 def set_django_admin_url(file_path):
-    django_admin_url = set_flag(
+    return set_flag(
         file_path,
         '!!!SET DJANGO_ADMIN_URL!!!',
         formatted='{0}/',
-        length=32,  # noqa: Z432
+        length=32,  # noqa: WPS432
         using_digits=True,
         using_ascii_letters=True,
     )
-    return django_admin_url
 
 
 def generate_random_user():
-    return generate_random_string(length=32, using_ascii_letters=True)  # noqa: Z432
+    return generate_random_string(length=32, using_ascii_letters=True)  # noqa: WPS432
 
 
 def generate_postgres_user(debug=False):
     return DEBUG_VALUE if debug else generate_random_user()
 
 
-def set_postgres_user(file_path, value):  # noqa: Z110
-    postgres_user = set_flag(file_path, '!!!SET POSTGRES_USER!!!', value=value)
-    return postgres_user
+def set_postgres_user(file_path, value):
+    return set_flag(file_path, '!!!SET POSTGRES_USER!!!', value=value)
 
 
-def set_postgres_password(file_path, value=None):  # noqa: Z110
-    postgres_password = set_flag(
+def set_postgres_password(file_path, value=None):
+    return set_flag(
         file_path,
         '!!!SET POSTGRES_PASSWORD!!!',
         value=value,
-        length=64,  # noqa: Z432
+        length=64,  # noqa: WPS432
         using_digits=True,
         using_ascii_letters=True,
     )
-    return postgres_password
 
 
-def set_celery_flower_user(file_path, value):  # noqa: Z110
-    celery_flower_user = set_flag(file_path, '!!!SET CELERY_FLOWER_USER!!!', value=value)
-    return celery_flower_user
+def set_celery_flower_user(file_path, value):
+    return set_flag(file_path, '!!!SET CELERY_FLOWER_USER!!!', value=value)
 
 
-def set_celery_flower_password(file_path, value=None):  # noqa: Z110
-    celery_flower_password = set_flag(
+def set_celery_flower_password(file_path, value=None):
+    return set_flag(
         file_path,
         '!!!SET CELERY_FLOWER_PASSWORD!!!',
         value=value,
-        length=64,  # noqa: Z432
+        length=64,  # noqa: WPS432
         using_digits=True,
         using_ascii_letters=True,
     )
-    return celery_flower_password
 
 
-def set_flags_in_envs(postgres_user, celery_flower_user, debug=False):  # noqa: Z213
+def set_flags_in_envs(postgres_user, celery_flower_user, debug=False):  # noqa: WPS213
     local_django_envs_path = os.path.join('.envs', '.local', '.django')
     production_django_envs_path = os.path.join('.envs', '.production', '.django')
     local_postgres_envs_path = os.path.join('.envs', '.local', '.postgres')
@@ -259,7 +257,7 @@ def remove_node_dockerfile():
 def clean_file_contents():
     """Clean generated files from trailing whitespaces and extra newlines."""
     for file_path in PROJECT_ROOT.rglob('*'):
-        if file_path.suffix in ('.ico',):
+        if file_path.suffix in {'.ico'}:
             continue
         if file_path.is_file():
             file_content = file_path.read_text()
@@ -269,7 +267,7 @@ def clean_file_contents():
             # Python and Javascript files may use two empty lines to separate code blocks (classes, etc.). Each
             # particular case for them will be checked by language-specific linters. For other files one empty line
             # is enough.
-            if file_path.suffix in ('.py', '.js'):
+            if file_path.suffix in {'.py', '.js'}:
                 file_content = re.sub(r'\n{4,}', '\n\n\n', file_content, flags=re.MULTILINE)
             else:
                 file_content = re.sub(r'\n{3,}', '\n\n', file_content, flags=re.MULTILINE)
@@ -279,8 +277,10 @@ def clean_file_contents():
             file_path.write_text(file_content)
 
 
-def main():  # noqa: C901,Z213
+def main():  # noqa: C901,WPS213
     debug = '{{ cookiecutter.debug }}'.lower() == 'y'
+
+    rename_setup_cfg()
 
     set_flags_in_envs(
         DEBUG_VALUE if debug else generate_random_user(),
@@ -289,9 +289,9 @@ def main():  # noqa: C901,Z213
     )
     set_flags_in_settings_files()
 
-    if '{{ cookiecutter.open_source_license }}' == 'Not open source':  # noqa: Z308
+    if '{{ cookiecutter.open_source_license }}' == 'Not open source':  # noqa: WPS308
         remove_open_source_files()
-    if '{{ cookiecutter.open_source_license}}' != 'GPLv3':  # noqa: Z308
+    if '{{ cookiecutter.open_source_license}}' != 'GPLv3':  # noqa: WPS308
         remove_gplv3_files()
 
     if '{{ cookiecutter.use_pycharm }}'.lower() == 'n':
@@ -305,10 +305,7 @@ def main():  # noqa: C901,Z213
     if '{{ cookiecutter.use_heroku }}'.lower() == 'n':
         remove_heroku_files()
 
-    if (
-        '{{ cookiecutter.use_docker }}'.lower() == 'n'
-        and '{{ cookiecutter.use_heroku }}'.lower() == 'n'
-    ):
+    if '{{ cookiecutter.use_docker }}'.lower() == 'n' and '{{ cookiecutter.use_heroku }}'.lower() == 'n':
         if '{{ cookiecutter.keep_local_envs_in_vcs }}'.lower() == 'y':
             print(
                 INFO + '.env(s) are only utilized when Docker Compose and/or '

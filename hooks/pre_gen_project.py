@@ -8,7 +8,7 @@ NOTE:
 
 TODO: ? restrict Cookiecutter Django project initialization to Python 3.x environments only
 """
-from __future__ import print_function  # noqa: Z422
+from __future__ import print_function  # noqa: WPS422
 
 import contextlib
 import sys
@@ -27,7 +27,7 @@ with contextlib.suppress(AttributeError):
 
 
 assert (  # noqa: S101
-    '\\' not in '{{ cookiecutter.author_name }}'  # noqa: Z308
+    '\\' not in '{{ cookiecutter.author_name }}'  # noqa: WPS308
 ), "Don't include backslashes in author name."
 
 if '{{ cookiecutter.use_docker }}'.lower() == 'n':

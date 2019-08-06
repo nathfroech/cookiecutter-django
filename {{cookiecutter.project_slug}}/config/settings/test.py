@@ -1,7 +1,7 @@
 """With these settings, tests run faster."""
 
-from .base import *  # noqa: F403,Z300
-from .base import env  # noqa: Z300
+from .base import *  # noqa: F403,WPS300
+from .base import env  # noqa: WPS300
 
 # GENERAL
 # ------------------------------------------------------------------------------

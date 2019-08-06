@@ -6,10 +6,10 @@ import pytest
 
 ROOT_DIR_PATH = pathlib.Path(__file__).parent
 PRODUCTION_DOTENVS_DIR_PATH = ROOT_DIR_PATH / '.envs' / '.production'
-PRODUCTION_DOTENV_FILE_PATHS = [
+PRODUCTION_DOTENV_FILE_PATHS = (
     PRODUCTION_DOTENVS_DIR_PATH / '.django',
     PRODUCTION_DOTENVS_DIR_PATH / '.postgres',
-]
+)
 DOTENV_FILE_PATH = ROOT_DIR_PATH / '.env'
 
 
@@ -30,7 +30,7 @@ def main():
     merge(DOTENV_FILE_PATH, PRODUCTION_DOTENV_FILE_PATHS)
 
 
-@pytest.mark.parametrize('merged_file_count', range(3))  # noqa: Z210
+@pytest.mark.parametrize('merged_file_count', range(3))  # noqa: WPS210
 @pytest.mark.parametrize('append_linesep', [True, False])
 def test_merge(tmpdir_factory, merged_file_count: int, append_linesep: bool):
     tmp_dir_path = pathlib.Path(tmpdir_factory.getbasetemp())

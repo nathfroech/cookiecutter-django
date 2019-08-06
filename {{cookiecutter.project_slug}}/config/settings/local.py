@@ -1,5 +1,5 @@
-from .base import *  # noqa: F403,Z300
-from .base import env  # noqa: Z300
+from .base import *  # noqa: F403,WPS300
+from .base import env  # noqa: WPS300
 
 # GENERAL
 # ------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ DEBUG_TOOLBAR_CONFIG = {
 INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
 {% if cookiecutter.use_docker == 'y' -%}
 if env('USE_DOCKER') == 'yes':
-    import socket  # noqa: Z435
+    import socket  # noqa: WPS433
 
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]

@@ -1,4 +1,5 @@
 import os
+import pathlib
 import re
 
 import pytest
@@ -11,8 +12,8 @@ from pytest_cases import pytest_fixture_plus
 PATTERN = r'{{(\s?cookiecutter)[.](.*?)}}'
 RE_OBJ = re.compile(PATTERN)
 
-YN_CHOICES = ['y', 'n']
-CLOUD_CHOICES = ['AWS', 'GCE']
+YN_CHOICES = ('y', 'n')
+CLOUD_CHOICES = ('AWS', 'GCE')
 
 
 @pytest.fixture
@@ -29,7 +30,7 @@ def context():
     }
 
 
-@pytest_fixture_plus  # noqa: Z211,Z216
+@pytest_fixture_plus  # noqa: WPS211,WPS216
 @pytest.mark.parametrize('windows', YN_CHOICES, ids=lambda yn: 'win:{0}'.format(yn))
 @pytest.mark.parametrize('use_docker', YN_CHOICES, ids=lambda yn: 'docker:{0}'.format(yn))
 @pytest.mark.parametrize('use_celery', YN_CHOICES, ids=lambda yn: 'celery:{0}'.format(yn))
@@ -83,7 +84,7 @@ def check_paths(paths):
             assert_that(match, is_(none()), message_template.format(path))
 
 
-def test_project_generation(cookies, context, context_combination):  # noqa: Z213
+def test_project_generation(cookies, context, context_combination):  # noqa: WPS213
     """
     Test that project is generated, fully rendered and passes pre-commit.
 
@@ -96,6 +97,8 @@ def test_project_generation(cookies, context, context_combination):  # noqa: Z21
     assert_that(baked_result.exception, is_(none()))
     assert_that(baked_result.project.basename, is_(equal_to(context['project_slug'])))
     assert_that(baked_result.project.isdir())
+
+    assert_that(pathlib.Path(project_path).joinpath('setup.cfg').is_file())
 
     paths = build_files_list(project_path)
     assert_that(paths)

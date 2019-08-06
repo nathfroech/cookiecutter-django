@@ -8,9 +8,9 @@ from django.http import HttpRequest
 
 class AccountAdapter(DefaultAccountAdapter):
     def is_open_for_signup(self, request: HttpRequest):
-        return getattr(settings, 'ACCOUNT_ALLOW_REGISTRATION', default=True)
+        return getattr(settings, 'ACCOUNT_ALLOW_REGISTRATION', default=True)  # noqa: B009 Setting may not exist
 
 
 class SocialAccountAdapter(DefaultSocialAccountAdapter):
     def is_open_for_signup(self, request: HttpRequest, sociallogin: Any):
-        return getattr(settings, 'ACCOUNT_ALLOW_REGISTRATION', default=True)
+        return getattr(settings, 'ACCOUNT_ALLOW_REGISTRATION', default=True)  # noqa: B009 Setting may not exist

@@ -1,12 +1,10 @@
-#!/usr/bin/env python
-
 import os
 import sys
 
 try:
-    from setuptools import setup  # noqa: Z435
+    from setuptools import setup  # noqa: WPS433
 except ImportError:
-    from distutils.core import setup  # noqa: Z435
+    from distutils.core import setup  # noqa: WPS433
 
 # Our version ALWAYS matches the version of Django we support
 # If Django has a new release, we branch, tag, then update this setting after the tag.

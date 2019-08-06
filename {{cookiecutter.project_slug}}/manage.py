@@ -8,13 +8,13 @@ if __name__ == '__main__':
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
 
     try:
-        from django.core.management import execute_from_command_line  # noqa: Z435
+        from django.core.management import execute_from_command_line  # noqa: WPS433
     except ImportError:
         # The above import may fail for some other reason. Ensure that the
         # issue is really that Django is missing to avoid masking other
         # exceptions on Python 2.
-        try:  # noqa: Z464
-            import django  # noqa: F401,Z435
+        try:  # noqa: WPS505
+            import django  # noqa: F401,WPS433
         except ImportError:
             raise ImportError(
                 "Couldn't import Django. Are you sure it's installed and "

@@ -25,7 +25,7 @@ Basic Commands
 --------------
 
 Updating requirements
-^^^^^^^^^^^^^^^^^^^^^
+`````````````````````
 
 Project uses `pip-tools
 <https://github.com/jazzband/pip-tools>`_ for requirements management. If you need to add a new requirement, go to
@@ -39,7 +39,7 @@ For compatibility with traditional project structure there is also ``requirement
 simply links to ``requirements/production.txt``.
 
 Setting Up Your Users
-^^^^^^^^^^^^^^^^^^^^^
+`````````````````````
 
 * To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
 
@@ -50,17 +50,17 @@ Setting Up Your Users
 For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
 
 Linting
-^^^^^^^
+```````
 
 EditorConfig
-============
+''''''''''''
 There is ``.editorconfig`` file at the project root, which describes some basic rules for IDE. PyCharm supports it out
 of the box, for other IDEs you may have to install a plugin.
 
 Visit https://editorconfig.org/ for additional information.
 
 Commit hooks
-============
+''''''''''''
 You may run linters after every commit so that they prevent committing code that has some problems. To do this, execute
 ``pre-commit install``.
 
@@ -75,7 +75,7 @@ Note that ``pre-commit`` checks only files that are tracked by ``git``.
 You can find tool documentation at https://pre-commit.com/.
 
 Type checks
-^^^^^^^^^^^
+```````````
 
 Running type checks with mypy:
 
@@ -84,7 +84,7 @@ Running type checks with mypy:
   $ mypy {{cookiecutter.project_slug}}
 
 Tests
-^^^^^
+`````
 
 Project uses ``pytest`` for testing.
 
@@ -104,7 +104,7 @@ To run tests: ``make test``.
 To run tests and receive a coverage statistics: ``make coverage``.
 
 Live reloading and Sass CSS compilation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```````````````````````````````````````
 
 Moved to `Live reloading and SASS compilation`_.
 
@@ -113,7 +113,7 @@ Moved to `Live reloading and SASS compilation`_.
 {% if cookiecutter.use_celery == "y" %}
 
 Celery
-^^^^^^
+``````
 
 This app comes with Celery.
 
@@ -130,7 +130,7 @@ Please note: For Celery's import magic to work, it is important *where* the cele
 {% if cookiecutter.use_mailhog == "y" %}
 
 Email Server
-^^^^^^^^^^^^
+````````````
 {% if cookiecutter.use_docker == 'y' %}
 In development, it is often nice to be able to see emails that are being sent from your application. For that reason local SMTP server `MailHog`_ with a web interface is available as docker container.
 
@@ -166,7 +166,7 @@ Now you have your own mail server running locally, ready to receive whatever you
 {% if cookiecutter.use_sentry == "y" %}
 
 Sentry
-^^^^^^
+``````
 
 Sentry is an error logging aggregator service. You can sign up for a free account at  https://sentry.io/signup/?code=cookiecutter  or download and host it yourself.
 The system is setup with reasonable defaults, including 404 logging and integration with the WSGI application.
@@ -181,7 +181,7 @@ The following details how to deploy this application.
 {% if cookiecutter.use_heroku.lower() == "y" %}
 
 Heroku
-^^^^^^
+``````
 
 See detailed `cookiecutter-django Heroku documentation`_.
 
@@ -190,7 +190,7 @@ See detailed `cookiecutter-django Heroku documentation`_.
 {% if cookiecutter.use_docker.lower() == "y" %}
 
 Docker
-^^^^^^
+``````
 
 See detailed `cookiecutter-django Docker documentation`_.
 
@@ -199,7 +199,7 @@ See detailed `cookiecutter-django Docker documentation`_.
 
 {% if cookiecutter.custom_bootstrap_compilation == "y" %}
 Custom Bootstrap Compilation
-^^^^^^
+````````````````````````````
 
 The generated CSS is set up with automatic Bootstrap recompilation with variables of your choice.
 Bootstrap v4 is installed using npm and customised by tweaking your variables in ``static/sass/custom_bootstrap_vars``.

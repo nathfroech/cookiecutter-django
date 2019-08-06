@@ -1,5 +1,5 @@
 import django.contrib.sites.models
-from django.contrib.sites.models import _simple_domain_name_validator  # noqa: Z440
+from django.contrib.sites.models import _simple_domain_name_validator  # noqa: WPS436
 from django.db import migrations, models
 
 
