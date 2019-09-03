@@ -157,7 +157,6 @@ Answer the prompts with your own desired options_. For example::
     description [Behold My Awesome Project!]: A reddit clone.
     domain_name [example.com]: myreddit.com
     version [0.1.0]: 0.0.1
-    timezone [UTC]: America/Los_Angeles
     use_whitenoise [n]: n
     use_celery [n]: y
     use_mailhog [n]: n
