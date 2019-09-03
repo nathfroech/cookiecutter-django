@@ -34,9 +34,6 @@ open_source_license:
     4. `Apache Software License 2.0`_
     5. Not open source
 
-timezone:
-    The value to be used for the ``TIME_ZONE`` setting of the project.
-
 use_pycharm:
     Indicates whether the project should be configured for development with PyCharm_.
 
