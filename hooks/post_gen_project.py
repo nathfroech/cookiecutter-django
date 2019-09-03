@@ -54,16 +54,6 @@ def remove_pycharm_files():
     clean_dir('docs', 'pycharm')
 
 
-def remove_docker_files():
-    clean_dir('compose')
-
-    clean_files('local.yml', 'production.yml', '.dockerignore')
-
-
-def remove_utility_files():
-    clean_dir('utility')
-
-
 def remove_heroku_files():
     file_names = ['Procfile', 'runtime.txt']
     if '{{ cookiecutter.use_travisci }}'.lower() != 'y':
@@ -228,18 +218,9 @@ def set_flags_in_settings_files():
     set_django_secret_key(os.path.join('config', 'settings', 'test.py'))
 
 
-def remove_envs_and_associated_files():
-    shutil.rmtree('.envs')
-    os.remove('merge_production_dotenvs_in_dotenv.py')
-
-
 def remove_celery_compose_dirs():
     shutil.rmtree(os.path.join('compose', 'local', 'django', 'celery'))
     shutil.rmtree(os.path.join('compose', 'production', 'django', 'celery'))
-
-
-def remove_node_dockerfile():
-    shutil.rmtree(os.path.join('compose', 'local', 'node'))
 
 
 def clean_file_contents():
@@ -285,38 +266,19 @@ def main():  # noqa: C901,WPS213
     if '{{ cookiecutter.use_pycharm }}'.lower() == 'n':
         remove_pycharm_files()
 
-    if '{{ cookiecutter.use_docker }}'.lower() == 'y':
-        remove_utility_files()
-    else:
-        remove_docker_files()
-
     if '{{ cookiecutter.use_heroku }}'.lower() == 'n':
         remove_heroku_files()
 
-    if '{{ cookiecutter.use_docker }}'.lower() == 'n' and '{{ cookiecutter.use_heroku }}'.lower() == 'n':
-        if '{{ cookiecutter.keep_local_envs_in_vcs }}'.lower() == 'y':
-            print(
-                INFO + '.env(s) are only utilized when Docker Compose and/or '
-                'Heroku support is enabled so keeping them does not '
-                'make sense given your current setup.' + TERMINATOR,
-            )
-        remove_envs_and_associated_files()
-    else:
-        append_to_project_gitignore('.env')
-        append_to_project_gitignore('.envs/*')
-        if '{{ cookiecutter.keep_local_envs_in_vcs }}'.lower() == 'y':
-            append_to_project_gitignore('!.envs/.local/')
+    if '{{ cookiecutter.keep_local_envs_in_vcs }}'.lower() == 'y':
+        append_to_project_gitignore('!.envs/.local/')
 
     if '{{ cookiecutter.js_task_runner}}'.lower() == 'none':
         remove_gulp_files()
         remove_packagejson_file()
-        if '{{ cookiecutter.use_docker }}'.lower() == 'y':
-            remove_node_dockerfile()
 
     if '{{ cookiecutter.use_celery }}'.lower() == 'n':
         remove_celery_app()
-        if '{{ cookiecutter.use_docker }}'.lower() == 'y':
-            remove_celery_compose_dirs()
+        remove_celery_compose_dirs()
 
     if '{{ cookiecutter.use_travisci }}'.lower() == 'n':
         remove_dottravisyml_file()

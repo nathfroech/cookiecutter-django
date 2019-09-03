@@ -43,9 +43,6 @@ windows:
 use_pycharm:
     Indicates whether the project should be configured for development with PyCharm_.
 
-use_docker:
-    Indicates whether the project should be configured to use Docker_ and `Docker Compose`_.
-
 js_task_runner:
     Select a JavaScript task runner. The choices are:
 
@@ -102,9 +99,6 @@ debug:
 .. _Apache Software License 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
 .. _PyCharm: https://www.jetbrains.com/pycharm/
-
-.. _Docker: https://github.com/docker/docker
-.. _Docker Compose: https://docs.docker.com/compose/
 
 .. _Gulp: https://github.com/gulpjs/gulp
 

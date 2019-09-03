@@ -30,12 +30,9 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 # EMAIL
 # ------------------------------------------------------------------------------
-{% if cookiecutter.use_mailhog == 'y' and cookiecutter.use_docker == 'y' -%}
+{% if cookiecutter.use_mailhog == 'y' -%}
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-host
 EMAIL_HOST = env('EMAIL_HOST', default='mailhog')
-{%- elif cookiecutter.use_mailhog == 'y' and cookiecutter.use_docker == 'n' -%}
-# https://docs.djangoproject.com/en/dev/ref/settings/#email-host
-EMAIL_HOST = 'localhost'
 {%- else -%}
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
@@ -58,13 +55,11 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#internal-ips
 INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
-{% if cookiecutter.use_docker == 'y' -%}
 if env('USE_DOCKER') == 'yes':
     import socket  # noqa: WPS433
 
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]
-{%- endif %}
 
 # django-extensions
 # ------------------------------------------------------------------------------
@@ -74,10 +69,8 @@ INSTALLED_APPS += ['django_extensions']
 
 # Celery
 # ------------------------------------------------------------------------------
-{% if cookiecutter.use_docker == 'n' -%}
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#task-always-eager
-CELERY_TASK_ALWAYS_EAGER = True
-{%- endif %}
+CELERY_TASK_ALWAYS_EAGER = False
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#task-eager-propagates
 CELERY_TASK_EAGER_PROPAGATES = True
 

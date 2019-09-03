@@ -110,15 +110,6 @@ function imgCompression() {
     .pipe(dest(paths.images))
 }
 
-// Run django server
-function runServer(cb) {
-  var cmd = spawn('python', ['manage.py', 'runserver'], {stdio: 'inherit'})
-  cmd.on('close', function(code) {
-    console.log('runServer exited with code ' + code)
-    cb(code)
-  })
-}
-
 // Browser sync server for live reload
 function initBrowserSync() {
     browserSync.init(
@@ -128,9 +119,6 @@ function initBrowserSync() {
         `${paths.templates}/*.html`
       ], {
         // https://www.browsersync.io/docs/options/#option-proxy
-        {%- if cookiecutter.use_docker == 'n' %}
-        proxy: 'localhost:8000'
-        {% else %}
         proxy:  {
           target: 'django:8000',
           proxyReq: [
@@ -143,7 +131,6 @@ function initBrowserSync() {
         // https://www.browsersync.io/docs/options/#option-open
         // Disable as it doesn't work from inside a container
         open: false
-        {%- endif %}
       }
     )
 }
@@ -165,9 +152,6 @@ const generateAssets = parallel(
 
 // Set up dev environment
 const dev = parallel(
-  {%- if cookiecutter.use_docker == 'n' %}
-  runServer,
-  {%- endif %}
   initBrowserSync,
   watchPaths
 )
