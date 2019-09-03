@@ -16,7 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Removed additional checks for Python 2, added restriction for Python 3.6+ (@nathfroech)
 ### Deleted
 - Removed possibility to select PostgreSQL version on project setup (@nathfroech)
-- Removed the possibility to set timezone for project generation (@nathfroech)
+- Removed the possibility to set some options for project generation (timezone, email) (@nathfroech)
 
 ## [2018-02-16]
 ### Changed
