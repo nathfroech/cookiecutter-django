@@ -31,7 +31,6 @@ def context():
 
 
 @pytest_fixture_plus  # noqa: WPS211,WPS216
-@pytest.mark.parametrize('windows', YN_CHOICES, ids=lambda yn: 'win:{0}'.format(yn))
 @pytest.mark.parametrize('use_celery', YN_CHOICES, ids=lambda yn: 'celery:{0}'.format(yn))
 @pytest.mark.parametrize('use_mailhog', YN_CHOICES, ids=lambda yn: 'mailhog:{0}'.format(yn))
 @pytest.mark.parametrize('use_sentry', YN_CHOICES, ids=lambda yn: 'sentry:{0}'.format(yn))
@@ -39,7 +38,6 @@ def context():
 @pytest.mark.parametrize('use_whitenoise', YN_CHOICES, ids=lambda yn: 'wnoise:{0}'.format(yn))
 @pytest.mark.parametrize('cloud_provider', CLOUD_CHOICES, ids=lambda yn: 'cloud:{0}'.format(yn))
 def context_combination(
-    windows,
     use_celery,
     use_mailhog,
     use_sentry,
@@ -49,7 +47,6 @@ def context_combination(
 ):
     """Fixture that parametrize the function where it's used."""
     return {
-        'windows': windows,
         'use_compressor': use_compressor,
         'use_celery': use_celery,
         'use_mailhog': use_mailhog,
