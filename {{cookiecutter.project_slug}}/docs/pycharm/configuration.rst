@@ -59,12 +59,17 @@ Known issues
 
 This might be fault of your firewall. Take a look on this ticket - https://youtrack.jetbrains.com/issue/PY-18913
 
-* Modified files in ``.idea`` directory
+* Sharing PyCharm configuration (``.idea`` directory)
 
-Most of the files from ``.idea/`` were added to ``.gitignore`` with a few exceptions, which were made, to provide "ready to go" configuration. After adding remote interpreter some of these files are altered by PyCharm:
+By default, ``.idea/`` directory is completely ignored. If you need to share IDE settings across the team, remove line
+``.idea`` from ``.gitignore`` file and configure more detailed ignore rules.
+
+If configuration files are stored in repository, after adding remote interpreter some of these files may be altered
+by PyCharm:
 
 .. image:: images/issue2.png
 
-In theory you can remove them from repository, but then, other people will lose a ability to initialize a project from provided configurations as you did. To get rid of this annoying state, you can run command::
+In theory you can remove them from repository, but then, other people will lose a ability to initialize a project from
+provided configurations as you did. To get rid of this annoying state, you can run command::
 
     $ git update-index --assume-unchanged {{cookiecutter.project_slug}}.iml

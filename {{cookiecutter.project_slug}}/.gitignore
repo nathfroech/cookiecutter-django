@@ -161,7 +161,8 @@ typings/
 !.vscode/extensions.json
 
 
-{% if cookiecutter.use_pycharm == 'y' -%}
+# Ignored the whole PyCharm settings directory. If you need to store IDE settings in repo, remove the following line.
+.idea/
 # Provided default Pycharm Run/Debug Configurations should be tracked by git
 # In case of local modifications made by Pycharm, use update-index command
 # for each changed file, like this:
@@ -216,7 +217,6 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-{% endif %}
 
 
 ### Windows template

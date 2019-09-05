@@ -49,11 +49,6 @@ def remove_gplv3_files():
     clean_files('COPYING')
 
 
-def remove_pycharm_files():
-    clean_dir('.idea')
-    clean_dir('docs', 'pycharm')
-
-
 def remove_docker_files():
     clean_dir('compose')
 
@@ -281,9 +276,6 @@ def main():  # noqa: C901,WPS213
         remove_open_source_files()
     if '{{ cookiecutter.open_source_license}}' != 'GPLv3':  # noqa: WPS308
         remove_gplv3_files()
-
-    if '{{ cookiecutter.use_pycharm }}'.lower() == 'n':
-        remove_pycharm_files()
 
     if '{{ cookiecutter.use_docker }}'.lower() == 'y':
         remove_utility_files()

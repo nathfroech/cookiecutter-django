@@ -160,9 +160,6 @@ repos:
         exclude: '\{\{cookiecutter.project_slug\}\}/package\.json'
         stages:
           - commit
-      - id: check-xml  # This hook checks xml files for parseable syntax.
-        stages:
-          - commit
       - id: detect-private-key  # Detects the presence of private keys
         stages:
           - commit
