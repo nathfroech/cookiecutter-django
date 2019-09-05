@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Deleted
 - Removed possibility to select PostgreSQL version on project setup (@nathfroech)
 - Removed the possibility to set some options for project generation (timezone, email) (@nathfroech)
+- Removed `django.contrib.sites` from default configuration; reenable it manually at generated project if needed (@nathfroech)
 
 ## [2018-02-16]
 ### Changed
