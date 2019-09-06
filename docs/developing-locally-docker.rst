@@ -83,23 +83,19 @@ This is the excerpt from your project's ``local.yml``: ::
       - local_postgres_data:/var/lib/postgresql/data
       - local_postgres_data_backups:/backups
     env_file:
-      - ./.envs/.local/.postgres
+      - ./.envs/.local
 
   # ...
 
-The most important thing for us here now is ``env_file`` section enlisting ``./.envs/.local/.postgres``. Generally, the stack's behavior is governed by a number of environment variables (`env(s)`, for short) residing in ``envs/``, for instance, this is what we generate for you: ::
+The most important thing for us here now is ``env_file`` section enlisting ``./.envs/.local``. Generally, the stack's behavior is governed by a number of environment variables (`env(s)`, for short) residing in ``envs/``, for instance, this is what we generate for you: ::
 
     .envs
     ├── .local
-    │   ├── .django
-    │   └── .postgres
     └── .production
-        ├── .django
-        └── .postgres
 
-By convention, for any service ``sI`` in environment ``e`` (you know ``someenv`` is an environment when there is a ``someenv.yml`` file in the project root), given ``sI`` requires configuration, a ``.envs/.e/.sI`` ``service configuration`` file exists.
+By convention, for services in environment ``e`` (you know ``someenv`` is an environment when there is a ``someenv.yml`` file in the project root), given that any service requires configuration, a ``.envs/.e`` file exists (it contains configurations for all services).
 
-Consider the aforementioned ``.envs/.local/.postgres``: ::
+Consider the aforementioned ``.envs/.local``: ::
 
     # PostgreSQL
     # ------------------------------------------------------------------------------
@@ -110,12 +106,9 @@ Consider the aforementioned ``.envs/.local/.postgres``: ::
 
 The three envs we are presented with here are ``POSTGRES_DB``, ``POSTGRES_USER``, and ``POSTGRES_PASSWORD`` (by the way, their values have also been generated for you). You might have figured out already where these definitions will end up; it's all the same with ``django`` service container envs.
 
-One final touch: should you ever need to merge ``.envs/production/*`` in a single ``.env`` run the ``merge_production_dotenvs_in_dotenv.py``: ::
+One final touch: you may also need to copy ``.envs/.production`` as an ``.env`` file at project root: ::
 
-    $ python merge_production_dotenvs_in_dotenv.py
-
-The ``.env`` file will then be created, with all your production envs residing beside each other.
-
+    $ cp .envs/.production .env
 
 Tips & Tricks
 -------------
@@ -182,6 +175,6 @@ Prerequisites:
 * ``use_docker`` was set to ``y`` on project initialization;
 * ``use_celery`` was set to ``y`` on project initialization.
 
-By default, it's enabled both in local and production environments (``local.yml`` and ``production.yml`` Docker Compose configs, respectively) through a ``flower`` service. For added security, ``flower`` requires its clients to provide authentication credentials specified as the corresponding environments' ``.envs/.local/.django`` and ``.envs/.production/.django`` ``CELERY_FLOWER_USER`` and ``CELERY_FLOWER_PASSWORD`` environment variables. Check out ``localhost:5555`` and see for yourself.
+By default, it's enabled both in local and production environments (``local.yml`` and ``production.yml`` Docker Compose configs, respectively) through a ``flower`` service. For added security, ``flower`` requires its clients to provide authentication credentials specified as the corresponding environments' ``.envs/.local`` and ``.envs/.production`` ``CELERY_FLOWER_USER`` and ``CELERY_FLOWER_PASSWORD`` environment variables. Check out ``localhost:5555`` and see for yourself.
 
 .. _`Flower`: https://github.com/mher/flower

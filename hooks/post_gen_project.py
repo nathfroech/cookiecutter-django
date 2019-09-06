@@ -204,23 +204,21 @@ def set_celery_flower_password(file_path, value=None):
 
 
 def set_flags_in_envs(postgres_user, celery_flower_user, debug=False):  # noqa: WPS213
-    local_django_envs_path = os.path.join('.envs', '.local', '.django')
-    production_django_envs_path = os.path.join('.envs', '.production', '.django')
-    local_postgres_envs_path = os.path.join('.envs', '.local', '.postgres')
-    production_postgres_envs_path = os.path.join('.envs', '.production', '.postgres')
+    local_envs_path = os.path.join('.envs', '.local')
+    production_envs_path = os.path.join('.envs', '.production')
 
-    set_django_secret_key(production_django_envs_path)
-    set_django_admin_url(production_django_envs_path)
+    set_django_secret_key(production_envs_path)
+    set_django_admin_url(production_envs_path)
 
-    set_postgres_user(local_postgres_envs_path, value=postgres_user)
-    set_postgres_password(local_postgres_envs_path, value=DEBUG_VALUE if debug else None)
-    set_postgres_user(production_postgres_envs_path, value=postgres_user)
-    set_postgres_password(production_postgres_envs_path, value=DEBUG_VALUE if debug else None)
+    set_postgres_user(local_envs_path, value=postgres_user)
+    set_postgres_password(local_envs_path, value=DEBUG_VALUE if debug else None)
+    set_postgres_user(production_envs_path, value=postgres_user)
+    set_postgres_password(production_envs_path, value=DEBUG_VALUE if debug else None)
 
-    set_celery_flower_user(local_django_envs_path, value=celery_flower_user)
-    set_celery_flower_password(local_django_envs_path, value=DEBUG_VALUE if debug else None)
-    set_celery_flower_user(production_django_envs_path, value=celery_flower_user)
-    set_celery_flower_password(production_django_envs_path, value=DEBUG_VALUE if debug else None)
+    set_celery_flower_user(local_envs_path, value=celery_flower_user)
+    set_celery_flower_password(local_envs_path, value=DEBUG_VALUE if debug else None)
+    set_celery_flower_user(production_envs_path, value=celery_flower_user)
+    set_celery_flower_password(production_envs_path, value=DEBUG_VALUE if debug else None)
 
 
 def set_flags_in_settings_files():
@@ -228,9 +226,8 @@ def set_flags_in_settings_files():
     set_django_secret_key(os.path.join('config', 'settings', 'test.py'))
 
 
-def remove_envs_and_associated_files():
+def remove_envs():
     shutil.rmtree('.envs')
-    os.remove('merge_production_dotenvs_in_dotenv.py')
 
 
 def remove_celery_compose_dirs():
@@ -300,12 +297,12 @@ def main():  # noqa: C901,WPS213
                 'Heroku support is enabled so keeping them does not '
                 'make sense given your current setup.' + TERMINATOR,
             )
-        remove_envs_and_associated_files()
+        remove_envs()
     else:
         append_to_project_gitignore('.env')
         append_to_project_gitignore('.envs/*')
         if '{{ cookiecutter.keep_local_envs_in_vcs }}'.lower() == 'y':
-            append_to_project_gitignore('!.envs/.local/')
+            append_to_project_gitignore('!.envs/.local')
 
     if '{{ cookiecutter.js_task_runner}}'.lower() == 'none':
         remove_gulp_files()
