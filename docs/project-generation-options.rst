@@ -15,9 +15,6 @@ description:
 author_name:
     This is you! The value goes into places like ``LICENSE`` and such.
 
-email:
-    The email address you want to identify yourself in the project.
-
 domain_name:
     The domain name you plan to use for your project once it goes live.
     Note that it can be safely changed later on whenever you need to.
