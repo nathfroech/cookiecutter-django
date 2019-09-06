@@ -194,23 +194,21 @@ def set_celery_flower_password(file_path, value=None):
 
 
 def set_flags_in_envs(postgres_user, celery_flower_user, debug=False):  # noqa: WPS213
-    local_django_envs_path = os.path.join('.envs', '.local', '.django')
-    production_django_envs_path = os.path.join('.envs', '.production', '.django')
-    local_postgres_envs_path = os.path.join('.envs', '.local', '.postgres')
-    production_postgres_envs_path = os.path.join('.envs', '.production', '.postgres')
+    local_envs_path = os.path.join('.envs', '.local')
+    production_envs_path = os.path.join('.envs', '.production')
 
-    set_django_secret_key(production_django_envs_path)
-    set_django_admin_url(production_django_envs_path)
+    set_django_secret_key(production_envs_path)
+    set_django_admin_url(production_envs_path)
 
-    set_postgres_user(local_postgres_envs_path, value=postgres_user)
-    set_postgres_password(local_postgres_envs_path, value=DEBUG_VALUE if debug else None)
-    set_postgres_user(production_postgres_envs_path, value=postgres_user)
-    set_postgres_password(production_postgres_envs_path, value=DEBUG_VALUE if debug else None)
+    set_postgres_user(local_envs_path, value=postgres_user)
+    set_postgres_password(local_envs_path, value=DEBUG_VALUE if debug else None)
+    set_postgres_user(production_envs_path, value=postgres_user)
+    set_postgres_password(production_envs_path, value=DEBUG_VALUE if debug else None)
 
-    set_celery_flower_user(local_django_envs_path, value=celery_flower_user)
-    set_celery_flower_password(local_django_envs_path, value=DEBUG_VALUE if debug else None)
-    set_celery_flower_user(production_django_envs_path, value=celery_flower_user)
-    set_celery_flower_password(production_django_envs_path, value=DEBUG_VALUE if debug else None)
+    set_celery_flower_user(local_envs_path, value=celery_flower_user)
+    set_celery_flower_password(local_envs_path, value=DEBUG_VALUE if debug else None)
+    set_celery_flower_user(production_envs_path, value=celery_flower_user)
+    set_celery_flower_password(production_envs_path, value=DEBUG_VALUE if debug else None)
 
 
 def set_flags_in_settings_files():

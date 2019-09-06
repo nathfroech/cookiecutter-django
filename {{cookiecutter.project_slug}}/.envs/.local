@@ -15,3 +15,11 @@ REDIS_URL=redis://redis:6379/0
 CELERY_FLOWER_USER=!!!SET CELERY_FLOWER_USER!!!
 CELERY_FLOWER_PASSWORD=!!!SET CELERY_FLOWER_PASSWORD!!!
 {% endif %}
+
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB={{ cookiecutter.project_slug }}
+POSTGRES_USER=!!!SET POSTGRES_USER!!!
+POSTGRES_PASSWORD=!!!SET POSTGRES_PASSWORD!!!
