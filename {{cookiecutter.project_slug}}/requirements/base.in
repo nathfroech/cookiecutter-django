@@ -18,10 +18,13 @@ flower==0.9.3  # https://github.com/mher/flower
 {%- endif %}
 {%- endif %}
 
+environs[django]
+
 # Django
 # ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/topics/auth/passwords/#using-argon2-with-django
+argon2-cffi
 django==2.1.8  # pyup: < 2.2  # https://www.djangoproject.com/
-django-environ==0.4.5  # https://github.com/joke2k/django-environ
 django-model-utils==3.1.2  # https://github.com/jazzband/django-model-utils
 django-allauth==0.39.1  # https://github.com/pennersr/django-allauth
 {%- if cookiecutter.use_compressor == "y" %}

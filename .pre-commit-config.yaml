@@ -86,7 +86,8 @@ repos:
                       users/tests/test_views|
                       users/urls
                   )|
-                  config/settings/(base|local|production)
+                  config/settings|
+                  helpers/generate_env_file
               )\.py
           )$
         stages:
@@ -106,7 +107,8 @@ repos:
                       users/tests/test_views|
                       users/urls
                   )|
-                  config/settings/(base|local|production)
+                  config/settings|
+                  helpers/generate_env_file
               )\.py
           )$
         stages:
@@ -139,7 +141,7 @@ repos:
         name: Check python files (code style - flake8)
         entry: flake8
         language: system
-        args: [--config=setup.cfg]
+        args: [--config=./setup.cfg]
         types: [python]
         stages:
           - commit
@@ -149,7 +151,7 @@ repos:
         entry: yesqa
         language: system
         types: [python]
-        exclude: '\{\{cookiecutter.project_slug\}\}/config/settings/'
+        exclude: '\{\{cookiecutter.project_slug\}\}/config/settings\.py'
         stages:
           - commit
   # Other specific files and file types checks

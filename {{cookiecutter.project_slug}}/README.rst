@@ -21,6 +21,15 @@ Moved to settings_.
 
 .. _settings: http://cookiecutter-django.readthedocs.io/en/latest/settings.html
 
+All environment-dependent or confidential settings should be declared as environment variables. As an alternative, you
+may create ``.env`` file at project root, which would contain all such variables.
+
+
+Command ``make env_file`` will create such file with defaults, that should be replaced with actual values.
+
+You can use this command for the first production environment setup too - just use a special flag:
+``make env_file --production``.
+
 Basic Commands
 --------------
 
