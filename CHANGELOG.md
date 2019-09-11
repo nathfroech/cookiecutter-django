@@ -14,10 +14,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
  [wemake.services linter](https://github.com/wemake-services/wemake-python-styleguide) (@nathfroech)
 - Switched from `factory-boy` to `model-mommy` (@nathfroech)
 - Removed additional checks for Python 2, added restriction for Python 3.6+ (@nathfroech)
+- Refactored settings to use `environs` and made them environment-based (@nathfroech)
 ### Deleted
 - Removed possibility to select PostgreSQL version on project setup (@nathfroech)
 - Removed the possibility to set some options for project generation (timezone, email) (@nathfroech)
 - Removed `django.contrib.sites` from default configuration; reenable it manually at generated project if needed (@nathfroech)
+- Removed `django-crispy-forms` (@nathfroech)
 
 ## [2018-02-16]
 ### Changed

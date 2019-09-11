@@ -1,10 +1,13 @@
 """Make additional operations after project generation."""
+import hashlib
 import os
 import pathlib
 import random
 import re
 import shutil
 import string
+import time
+from importlib import util as importlib_util
 
 try:
     # Inspired by
@@ -20,6 +23,8 @@ INFO = '\x1b[1;33m [INFO]: '
 HINT = '\x1b[3;33m'
 SUCCESS = '\x1b[1;32m [SUCCESS]: '
 
+DEFAULT_ALLOWED_CHARS = string.ascii_letters + string.digits
+
 DEBUG_VALUE = 'debug'
 
 
@@ -27,6 +32,7 @@ PROJECT_ROOT = pathlib.Path.cwd()
 
 
 def rename_setup_cfg():
+    # setup.cfg for project template should be named differently, otherwise it may break file linting
     PROJECT_ROOT.joinpath('_setup.cfg').rename('setup.cfg')
 
 
@@ -85,9 +91,7 @@ def append_to_project_gitignore(path):
         gitignore_file.write(os.linesep)
 
 
-def generate_random_string(
-    length, using_digits=False, using_ascii_letters=False, using_punctuation=False,
-):
+def generate_random_string(length: int, allowed_chars: str = DEFAULT_ALLOWED_CHARS):
     """
     Generate random string of desired length.
 
@@ -96,20 +100,22 @@ def generate_random_string(
         would yield log_2((26+26+50)^50) ~= 334 bit strength.
     """
     if not using_sysrandom:
-        return None
+        # This is ugly, and a hack, but it makes things better than
+        # the alternative of predictability. This re-seeds the PRNG
+        # using a value that is hard for an attacker to predict, every
+        # time a random string is required. This may change the
+        # properties of the chosen random sequence slightly, but this
+        # is better than absolute predictability.
 
-    symbols = []
-    if using_digits:
-        symbols += string.digits
-    if using_ascii_letters:
-        symbols += string.ascii_letters
-    if using_punctuation:
-        all_punctuation = set(string.punctuation)
-        # These symbols can cause issues in environment variables
-        unsuitable = {"'", '"', '\\', '$'}
-        suitable = all_punctuation.difference(unsuitable)
-        symbols += ''.join(suitable)
-    return ''.join([random.choice(symbols) for _ in range(length)])
+        # Django uses settings.SECRET_KEY for this, but we cannot use the same strategy, because the code may be
+        # executed in environment where Django has not been installed or configured yet
+        temporary_secret_key = ''.join(random.choice(DEFAULT_ALLOWED_CHARS) for _ in range(length))
+        random.seed(
+            hashlib.sha256(
+                ('{0}{1}{2}'.format(random.getstate(), time.time(), temporary_secret_key)).encode(),
+            ).digest(),
+        )
+    return ''.join(random.choice(allowed_chars) for _ in range(length))
 
 
 def set_flag(file_path, flag, value=None, formatted=None, *args, **kwargs):  # noqa: WPS211
@@ -139,8 +145,7 @@ def set_django_secret_key(file_path):
         file_path,
         '!!!SET DJANGO_SECRET_KEY!!!',
         length=64,  # noqa: WPS432
-        using_digits=True,
-        using_ascii_letters=True,
+        allowed_chars=string.digits + string.ascii_letters,
     )
 
 
@@ -150,13 +155,12 @@ def set_django_admin_url(file_path):
         '!!!SET DJANGO_ADMIN_URL!!!',
         formatted='{0}/',
         length=32,  # noqa: WPS432
-        using_digits=True,
-        using_ascii_letters=True,
+        allowed_chars=string.digits + string.ascii_letters,
     )
 
 
 def generate_random_user():
-    return generate_random_string(length=32, using_ascii_letters=True)  # noqa: WPS432
+    return generate_random_string(length=32, allowed_chars=string.ascii_letters)  # noqa: WPS432
 
 
 def generate_postgres_user(debug=False):
@@ -173,8 +177,7 @@ def set_postgres_password(file_path, value=None):
         '!!!SET POSTGRES_PASSWORD!!!',
         value=value,
         length=64,  # noqa: WPS432
-        using_digits=True,
-        using_ascii_letters=True,
+        allowed_chars=string.digits + string.ascii_letters,
     )
 
 
@@ -188,8 +191,7 @@ def set_celery_flower_password(file_path, value=None):
         '!!!SET CELERY_FLOWER_PASSWORD!!!',
         value=value,
         length=64,  # noqa: WPS432
-        using_digits=True,
-        using_ascii_letters=True,
+        allowed_chars=string.digits + string.ascii_letters,
     )
 
 
@@ -211,14 +213,31 @@ def set_flags_in_envs(postgres_user, celery_flower_user, debug=False):  # noqa: 
     set_celery_flower_password(production_envs_path, value=DEBUG_VALUE if debug else None)
 
 
-def set_flags_in_settings_files():
-    set_django_secret_key(os.path.join('config', 'settings', 'local.py'))
-    set_django_secret_key(os.path.join('config', 'settings', 'test.py'))
+def remove_envs():
+    shutil.rmtree('.envs')
+
+
+def generate_dotenv():
+    spec = importlib_util.spec_from_file_location(
+        'generate_env_file',
+        PROJECT_ROOT.joinpath('helpers', 'generate_env_file.py'),
+    )
+    module = importlib_util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module.generate_dotenv_file('.env')
 
 
 def remove_celery_compose_dirs():
     shutil.rmtree(os.path.join('compose', 'local', 'django', 'celery'))
     shutil.rmtree(os.path.join('compose', 'production', 'django', 'celery'))
+
+
+def remove_node_dockerfile():
+    shutil.rmtree(os.path.join('compose', 'local', 'node'))
+
+
+def remove_custom_storages():
+    clean_files('config/custom_storages.py')
 
 
 def clean_file_contents():
@@ -254,7 +273,6 @@ def main():  # noqa: C901,WPS213
         DEBUG_VALUE if debug else generate_random_user(),
         debug=debug,
     )
-    set_flags_in_settings_files()
 
     if '{{ cookiecutter.open_source_license }}' == 'Not open source':  # noqa: WPS308
         remove_open_source_files()
@@ -268,7 +286,8 @@ def main():  # noqa: C901,WPS213
         remove_heroku_files()
 
     if '{{ cookiecutter.keep_local_envs_in_vcs }}'.lower() == 'y':
-        append_to_project_gitignore('!.envs/.local/')
+        append_to_project_gitignore('!.envs/.local')
+    generate_dotenv()
 
     if '{{ cookiecutter.js_task_runner}}'.lower() == 'none':
         remove_gulp_files()
@@ -280,6 +299,9 @@ def main():  # noqa: C901,WPS213
 
     if '{{ cookiecutter.use_travisci }}'.lower() == 'n':
         remove_dottravisyml_file()
+
+    if '{{ cookiecutter.cloud_provider }}'.upper() != 'AWS':
+        remove_custom_storages()
 
     clean_file_contents()
 

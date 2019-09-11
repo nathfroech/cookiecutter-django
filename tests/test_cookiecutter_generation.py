@@ -91,6 +91,7 @@ def test_project_generation(cookies, context, context_combination):  # noqa: WPS
     assert_that(baked_result.project.isdir())
 
     assert_that(pathlib.Path(project_path).joinpath('setup.cfg').is_file())
+    assert_that(pathlib.Path(project_path).joinpath('.env').is_file())
 
     paths = build_files_list(project_path)
     assert_that(paths)

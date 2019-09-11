@@ -1,14 +1,12 @@
 {% if cookiecutter.use_celery == 'y' -%}
-import os
 
 from celery import Celery
 
 from django.apps import AppConfig, apps
-from django.conf import settings
 
-if not settings.configured:
-    # set the default Django settings module for the 'celery' program.
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')  # pragma: no cover
+from config.prepare_environment import prepare_environment
+
+prepare_environment()
 
 
 app = Celery('{{cookiecutter.project_slug}}')

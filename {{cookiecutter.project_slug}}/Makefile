@@ -8,8 +8,14 @@ lint:
 
 .PHONY: test
 test:
+	@export PROJECT_ENVIRONMENT = test
 	@pytest -c setup.cfg
 
 .PHONY: coverage
 coverage:
+	@export PROJECT_ENVIRONMENT = test
 	@pytest -c setup.cfg --cov-config setup.cfg -s --cov-report term --cov .
+
+.PHONY: env_file
+env_file:
+	@python helpers/generate_env_file.py
