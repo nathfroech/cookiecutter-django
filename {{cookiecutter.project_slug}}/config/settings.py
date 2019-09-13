@@ -50,6 +50,8 @@ ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['{{ cookiecutter.domai
 TIME_ZONE = env('DJANGO_TIMEZONE', 'UTC')
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = 'en-us'
+# https://docs.djangoproject.com/en/dev/ref/settings/#site-id
+SITE_ID = 1
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
@@ -113,6 +115,7 @@ DJANGO_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
@@ -152,6 +155,11 @@ LOCAL_APPS = [
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
+
+# MIGRATIONS
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
+MIGRATION_MODULES = {'sites': '{{ cookiecutter.project_slug }}.contrib.sites.migrations'}
 
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
