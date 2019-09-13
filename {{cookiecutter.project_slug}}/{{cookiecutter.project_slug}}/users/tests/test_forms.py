@@ -5,9 +5,8 @@ from model_mommy import mommy
 from {{ cookiecutter.project_slug }}.users.forms import UserCreationForm
 from {{ cookiecutter.project_slug }}.users.models import User
 
-pytestmark = pytest.mark.django_db
 
-
+@pytest.mark.django_db
 class TestUserCreationForm:
     def test_clean_username_of_nonexistent_user(self):
         form = UserCreationForm({

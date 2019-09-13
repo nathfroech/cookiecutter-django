@@ -15,6 +15,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Switched from `factory-boy` to `model-mommy` (@nathfroech)
 - Removed additional checks for Python 2, added restriction for Python 3.6+ (@nathfroech)
 - Refactored settings to use `environs` and made them environment-based (@nathfroech)
+- Changed `User` model to inherit from `AbstractBaseUser`, not `AbstractUser`; made several other smaller changes to
+`users` app (@nathfroech)
 ### Deleted
 - Removed possibility to select PostgreSQL version on project setup (@nathfroech)
 - Removed the possibility to set some options for project generation (timezone, email) (@nathfroech)

@@ -82,9 +82,11 @@ repos:
                       conftest|
                       taskapp/celery|
                       users/admin|
+                      users/forms|
                       users/tests/test_forms|
                       users/tests/test_views|
-                      users/urls
+                      users/urls|
+                      users/views
                   )|
                   config/settings|
                   helpers/generate_env_file
@@ -103,9 +105,11 @@ repos:
                       conftest|
                       taskapp/celery|
                       users/admin|
+                      users/forms|
                       users/tests/test_forms|
                       users/tests/test_views|
-                      users/urls
+                      users/urls|
+                      users/views
                   )|
                   config/settings|
                   helpers/generate_env_file
