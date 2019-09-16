@@ -25,7 +25,7 @@ First things first.
 
 #. Install development requirements: ::
 
-    $ make update_requirements
+    $ make requirements
 
 #. Create a new PostgreSQL database using createdb_: ::
 
