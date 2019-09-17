@@ -8,11 +8,12 @@ import shutil
 import string
 import time
 from importlib import util as importlib_util
+from typing import Optional
 
 try:
     # Inspired by
     # https://github.com/django/django/blob/master/django/utils/crypto.py
-    random = random.SystemRandom()
+    random = random.SystemRandom()  # type: ignore
     using_sysrandom = True
 except NotImplementedError:
     using_sysrandom = False
@@ -31,46 +32,46 @@ DEBUG_VALUE = 'debug'
 PROJECT_ROOT = pathlib.Path.cwd()
 
 
-def rename_setup_cfg():
+def rename_setup_cfg() -> None:
     # setup.cfg for project template should be named differently, otherwise it may break file linting
     PROJECT_ROOT.joinpath('_setup.cfg').rename('setup.cfg')
 
 
-def clean_files(*files_to_clean: str):
+def clean_files(*files_to_clean: str) -> None:
     for file_name in files_to_clean:
         PROJECT_ROOT.joinpath(file_name).unlink()
 
 
-def clean_dir(*dir_path_terms: str):
+def clean_dir(*dir_path_terms: str) -> None:
     dir_path = PROJECT_ROOT.joinpath(*dir_path_terms)
     if dir_path.is_dir():
         shutil.rmtree(dir_path)
 
 
-def remove_open_source_files():
+def remove_open_source_files() -> None:
     clean_files('CONTRIBUTORS.txt', 'LICENSE')
 
 
-def remove_gplv3_files():
+def remove_gplv3_files() -> None:
     clean_files('COPYING')
 
 
-def remove_pycharm_files():
+def remove_pycharm_files() -> None:
     clean_dir('.idea')
     clean_dir('docs', 'pycharm')
 
 
-def remove_docker_files():
+def remove_docker_files() -> None:
     clean_dir('compose')
 
     clean_files('local.yml', 'production.yml', '.dockerignore')
 
 
-def remove_utility_files():
+def remove_utility_files() -> None:
     clean_dir('utility')
 
 
-def remove_heroku_files():
+def remove_heroku_files() -> None:
     file_names = ['Procfile', 'runtime.txt']
     if '{{ cookiecutter.use_travisci }}'.lower() != 'y':
         # don't remove the file if we are using travisci but not using heroku
@@ -78,30 +79,30 @@ def remove_heroku_files():
     clean_files(*file_names)
 
 
-def remove_gulp_files():
+def remove_gulp_files() -> None:
     clean_files('gulpfile.js')
 
 
-def remove_packagejson_file():
+def remove_packagejson_file() -> None:
     clean_files('package.json')
 
 
-def remove_celery_app():
+def remove_celery_app() -> None:
     clean_dir('{{ cookiecutter.project_slug }}', 'taskapp')
 
 
-def remove_dottravisyml_file():
+def remove_dottravisyml_file() -> None:
     clean_files('.travis.yml')
 
 
-def append_to_project_gitignore(path):
+def append_to_project_gitignore(path: str) -> None:
     gitignore_file_path = '.gitignore'
     with open(gitignore_file_path, 'a') as gitignore_file:
         gitignore_file.write(path)
         gitignore_file.write(os.linesep)
 
 
-def generate_random_string(length: int, allowed_chars: str = DEFAULT_ALLOWED_CHARS):
+def generate_random_string(length: int, allowed_chars: str = DEFAULT_ALLOWED_CHARS) -> str:
     """
     Generate random string of desired length.
 
@@ -128,15 +129,15 @@ def generate_random_string(length: int, allowed_chars: str = DEFAULT_ALLOWED_CHA
     return ''.join(random.choice(allowed_chars) for _ in range(length))
 
 
-def set_flag(file_path, flag, value=None, formatted=None, *args, **kwargs):  # noqa: WPS211
+def set_flag(
+    file_path: str,
+    flag: str,
+    value: Optional[str] = None,
+    formatted: Optional[str] = None,
+    **kwargs,
+) -> str:
     if value is None:
-        random_string = generate_random_string(*args, **kwargs)
-        if random_string is None:
-            print(
-                "We couldn't find a secure pseudo-random number generator on your system. "
-                'Please, make sure to manually {0} later.'.format(flag),
-            )
-            random_string = flag
+        random_string = generate_random_string(**kwargs)
         if formatted is not None:
             random_string = formatted.format(random_string)
         value = random_string
@@ -150,7 +151,7 @@ def set_flag(file_path, flag, value=None, formatted=None, *args, **kwargs):  # n
     return value
 
 
-def set_django_secret_key(file_path):
+def set_django_secret_key(file_path: str) -> str:
     return set_flag(
         file_path,
         '!!!SET DJANGO_SECRET_KEY!!!',
@@ -159,7 +160,7 @@ def set_django_secret_key(file_path):
     )
 
 
-def set_django_admin_url(file_path):
+def set_django_admin_url(file_path: str) -> str:
     return set_flag(
         file_path,
         '!!!SET DJANGO_ADMIN_URL!!!',
@@ -169,19 +170,19 @@ def set_django_admin_url(file_path):
     )
 
 
-def generate_random_user():
+def generate_random_user() -> str:
     return generate_random_string(length=32, allowed_chars=string.ascii_letters)  # noqa: WPS432
 
 
-def generate_postgres_user(debug=False):
+def generate_postgres_user(debug: bool = False) -> str:
     return DEBUG_VALUE if debug else generate_random_user()
 
 
-def set_postgres_user(file_path, value):
+def set_postgres_user(file_path: str, value: str) -> str:
     return set_flag(file_path, '!!!SET POSTGRES_USER!!!', value=value)
 
 
-def set_postgres_password(file_path, value=None):
+def set_postgres_password(file_path: str, value: Optional[str] = None) -> str:
     return set_flag(
         file_path,
         '!!!SET POSTGRES_PASSWORD!!!',
@@ -191,11 +192,11 @@ def set_postgres_password(file_path, value=None):
     )
 
 
-def set_celery_flower_user(file_path, value):
+def set_celery_flower_user(file_path: str, value: str) -> str:
     return set_flag(file_path, '!!!SET CELERY_FLOWER_USER!!!', value=value)
 
 
-def set_celery_flower_password(file_path, value=None):
+def set_celery_flower_password(file_path: str, value: Optional[str] = None) -> str:
     return set_flag(
         file_path,
         '!!!SET CELERY_FLOWER_PASSWORD!!!',
@@ -205,7 +206,7 @@ def set_celery_flower_password(file_path, value=None):
     )
 
 
-def set_flags_in_envs(postgres_user, celery_flower_user, debug=False):  # noqa: WPS213
+def set_flags_in_envs(postgres_user: str, celery_flower_user: str, debug: bool = False) -> None:  # noqa: WPS213
     local_envs_path = os.path.join('.envs', '.local')
     production_envs_path = os.path.join('.envs', '.production')
 
@@ -223,34 +224,34 @@ def set_flags_in_envs(postgres_user, celery_flower_user, debug=False):  # noqa: 
     set_celery_flower_password(production_envs_path, value=DEBUG_VALUE if debug else None)
 
 
-def remove_envs():
+def remove_envs() -> None:
     shutil.rmtree('.envs')
 
 
-def generate_dotenv():
+def generate_dotenv() -> None:
     spec = importlib_util.spec_from_file_location(
         'generate_env_file',
         PROJECT_ROOT.joinpath('helpers', 'generate_env_file.py'),
     )
     module = importlib_util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    module.generate_dotenv_file('.env')
+    spec.loader.exec_module(module)  # type: ignore
+    module.generate_dotenv_file('.env')  # type: ignore
 
 
-def remove_celery_compose_dirs():
+def remove_celery_compose_dirs() -> None:
     shutil.rmtree(os.path.join('compose', 'local', 'django', 'celery'))
     shutil.rmtree(os.path.join('compose', 'production', 'django', 'celery'))
 
 
-def remove_node_dockerfile():
+def remove_node_dockerfile() -> None:
     shutil.rmtree(os.path.join('compose', 'local', 'node'))
 
 
-def remove_custom_storages():
+def remove_custom_storages() -> None:
     clean_files('config/custom_storages.py')
 
 
-def clean_file_contents():
+def clean_file_contents() -> None:
     """Clean generated files from trailing whitespaces and extra newlines."""
     for file_path in PROJECT_ROOT.rglob('*'):
         if file_path.suffix in {'.ico'}:
@@ -273,7 +274,7 @@ def clean_file_contents():
             file_path.write_text(file_content)
 
 
-def main():  # noqa: C901,WPS213
+def main() -> None:  # noqa: C901,WPS213
     debug = '{{ cookiecutter.debug }}'.lower() == 'y'
 
     rename_setup_cfg()

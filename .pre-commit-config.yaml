@@ -158,6 +158,15 @@ repos:
         exclude: '\{\{cookiecutter.project_slug\}\}/config/settings\.py'
         stages:
           - commit
+      - id: mypy
+        name: Check python files (typing - mypy)
+        entry: mypy
+        language: system
+        args: [--config-file, setup.cfg]
+        types: [python]
+        exclude: '\{\{cookiecutter\.project_slug\}\}|docs/conf\.py|setup\.py'
+        stages:
+          - commit
   # Other specific files and file types checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.2.3

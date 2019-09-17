@@ -1,6 +1,7 @@
 import os
 import pathlib
 import re
+from typing import List
 
 import pytest
 import sh
@@ -60,7 +61,7 @@ def context_combination(
     }
 
 
-def build_files_list(root_dir):
+def build_files_list(root_dir: str) -> List[str]:
     """Build a list containing absolute paths to the generated files."""
     return [
         os.path.join(dirpath, file_path)
@@ -69,7 +70,7 @@ def build_files_list(root_dir):
     ]
 
 
-def check_paths(paths):
+def check_paths(paths: List[str]) -> None:
     """Check all paths have correct substitutions, used by other tests cases."""
     # Assert that no match is found in any of the files
     message_template = 'cookiecutter variable not replaced in {0}'

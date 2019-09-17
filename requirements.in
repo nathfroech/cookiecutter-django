@@ -10,6 +10,7 @@ yamllint
 restructuredtext-lint
 # Pygments is required for restructuredtext-lint but is not being installed with it
 pygments
+mypy
 
 wemake-python-styleguide
 flake8-django
@@ -54,7 +55,6 @@ Werkzeug
 ipdb
 Sphinx
 psycopg2-binary
-mypy
 pylint-django
 pylint-celery
 django-debug-toolbar

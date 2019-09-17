@@ -7,7 +7,7 @@ from {{ cookiecutter.project_slug }}.users.models import User
 
 
 @pytest.fixture(autouse=True)
-def media_storage(settings, tmpdir):
+def media_storage(settings, tmpdir) -> None:
     settings.MEDIA_ROOT = tmpdir.strpath
 
 

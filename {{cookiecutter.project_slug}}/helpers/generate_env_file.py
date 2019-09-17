@@ -22,7 +22,7 @@ from typing import Any, Dict
 try:
     # Inspired by
     # https://github.com/django/django/blob/master/django/utils/crypto.py
-    random = random.SystemRandom()
+    random = random.SystemRandom()  # type: ignore
     using_sysrandom = True
 except NotImplementedError:
     using_sysrandom = False

@@ -10,6 +10,7 @@ yamllint
 restructuredtext-lint
 # Pygments is required for restructuredtext-lint but is not being installed with it
 pygments
+mypy
 
 wemake-python-styleguide
 flake8-django
@@ -31,10 +32,6 @@ psycopg2 --no-binary psycopg2
 {%- else %}
 psycopg2-binary
 {%- endif %}
-
-# Testing
-# ------------------------------------------------------------------------------
-mypy
 
 # Code quality
 # ------------------------------------------------------------------------------

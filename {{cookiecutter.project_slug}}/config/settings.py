@@ -3,6 +3,7 @@
 import logging
 {%- endif %}
 import pathlib
+from typing import Any, Dict, List, Tuple
 
 import environs
 {%- if cookiecutter.use_sentry == 'y' %}
@@ -33,7 +34,7 @@ ENVIRONMENT_PRODUCTION = 'production'
 PROJECT_ENVIRONMENT = env(
     'PROJECT_ENVIRONMENT',
     ENVIRONMENT_PRODUCTION,
-    validate=OneOf([ENVIRONMENT_DEBUG, ENVIRONMENT_TEST, ENVIRONMENT_PRODUCTION]),
+    validate=OneOf([ENVIRONMENT_DEBUG, ENVIRONMENT_TEST, ENVIRONMENT_PRODUCTION]),  # type: ignore
 )
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
@@ -190,7 +191,7 @@ else:
     ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 if PROJECT_ENVIRONMENT in {ENVIRONMENT_DEBUG, ENVIRONMENT_TEST}:
-    AUTH_PASSWORD_VALIDATORS = []
+    AUTH_PASSWORD_VALIDATORS: List[Dict[str, Any]] = []
 else:
     AUTH_PASSWORD_VALIDATORS = [
         {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -329,7 +330,7 @@ loaders = [
     'django.template.loaders.app_directories.Loader',
 ]
 if PROJECT_ENVIRONMENT != ENVIRONMENT_DEBUG:
-    loaders = (
+    loaders = (    # type: ignore
         'django.template.loaders.cached.Loader',
         loaders,
     )
@@ -428,7 +429,7 @@ else:
 # Django Admin URL.
 ADMIN_URL = env('DJANGO_ADMIN_URL', 'admin/')
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = []
+ADMINS: List[Tuple[str, str]] = []
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
 
@@ -596,11 +597,11 @@ sentry_logging = LoggingIntegration(
 )
 
 {%- if cookiecutter.use_celery == 'y' %}
-sentry_sdk.init(
+sentry_sdk.init(  # type: ignore
     dsn=SENTRY_DSN,
     integrations=[sentry_logging, DjangoIntegration(), CeleryIntegration()],
 )
 {% else %}
-sentry_sdk.init(dsn=SENTRY_DSN, integrations=[sentry_logging, DjangoIntegration()])
+sentry_sdk.init(dsn=SENTRY_DSN, integrations=[sentry_logging, DjangoIntegration()])  # type: ignore
 {% endif -%}
 {% endif %}
