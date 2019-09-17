@@ -1,8 +1,8 @@
-from django.contrib.auth import forms, get_user_model
+from django.contrib.auth import forms
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _ul
 
-User = get_user_model()
+from {{ cookiecutter.project_slug }}.users.models import User
 
 
 class UserChangeForm(forms.UserChangeForm):
@@ -11,9 +11,8 @@ class UserChangeForm(forms.UserChangeForm):
 
 
 class UserCreationForm(forms.UserCreationForm):
-
     error_message = forms.UserCreationForm.error_messages.update(
-        {'duplicate_username': _('This username has already been taken.')},
+        {'duplicate_username': _ul('This username has already been taken.')},
     )
 
     class Meta(forms.UserCreationForm.Meta):

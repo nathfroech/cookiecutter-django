@@ -82,9 +82,11 @@ repos:
                       conftest|
                       taskapp/celery|
                       users/admin|
+                      users/forms|
                       users/tests/test_forms|
                       users/tests/test_views|
-                      users/urls
+                      users/urls|
+                      users/views
                   )|
                   config/settings|
                   helpers/generate_env_file
@@ -103,9 +105,11 @@ repos:
                       conftest|
                       taskapp/celery|
                       users/admin|
+                      users/forms|
                       users/tests/test_forms|
                       users/tests/test_views|
-                      users/urls
+                      users/urls|
+                      users/views
                   )|
                   config/settings|
                   helpers/generate_env_file
@@ -152,6 +156,15 @@ repos:
         language: system
         types: [python]
         exclude: '\{\{cookiecutter.project_slug\}\}/config/settings\.py'
+        stages:
+          - commit
+      - id: mypy
+        name: Check python files (typing - mypy)
+        entry: mypy
+        language: system
+        args: [--config-file, setup.cfg]
+        types: [python]
+        exclude: '\{\{cookiecutter\.project_slug\}\}|docs/conf\.py|setup\.py'
         stages:
           - commit
   # Other specific files and file types checks

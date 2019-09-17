@@ -2,14 +2,15 @@
 
 -r ./base.in
 
-pip-tools  # https://github.com/jazzband/pip-tools
+pip-tools
 
 # Linters
-pre-commit  # https://github.com/pre-commit/pre-commit/
-yamllint  # https://github.com/adrienverge/yamllint/
-restructuredtext-lint  # https://github.com/twolfson/restructuredtext-lint/
+pre-commit
+yamllint
+restructuredtext-lint
 # Pygments is required for restructuredtext-lint but is not being installed with it
-pygments  # https://bitbucket.org/birkenfeld/pygments-main/src/default/
+pygments
+mypy
 
 wemake-python-styleguide
 flake8-django
@@ -27,19 +28,15 @@ Werkzeug==0.15.2  # https://github.com/pallets/werkzeug
 ipdb==0.12  # https://github.com/gotcha/ipdb
 Sphinx==2.0.1  # https://github.com/sphinx-doc/sphinx
 
-# Testing
-# ------------------------------------------------------------------------------
-mypy==0.701  # https://github.com/python/mypy
-
 # Code quality
 # ------------------------------------------------------------------------------
-pylint-django==2.0.9  # https://github.com/PyCQA/pylint-django
+pylint-django
 {%- if cookiecutter.use_celery == 'y' %}
-pylint-celery==0.3  # https://github.com/PyCQA/pylint-celery
+pylint-celery
 {%- endif %}
 
 # Django
 # ------------------------------------------------------------------------------
-django-debug-toolbar==1.11  # https://github.com/jazzband/django-debug-toolbar
-django-extensions==2.1.6  # https://github.com/django-extensions/django-extensions
-django-coverage-plugin==1.6.0  # https://github.com/nedbat/django_coverage_plugin
+django-debug-toolbar
+django-extensions
+django-coverage-plugin

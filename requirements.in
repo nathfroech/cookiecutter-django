@@ -1,6 +1,8 @@
-cookiecutter==1.6.0
-sh==1.12.14
-binaryornot==0.4.4
+pip-tools
+
+cookiecutter
+sh
+binaryornot
 
 # Linters
 pre-commit
@@ -8,6 +10,7 @@ yamllint
 restructuredtext-lint
 # Pygments is required for restructuredtext-lint but is not being installed with it
 pygments
+mypy
 
 wemake-python-styleguide
 flake8-django
@@ -23,9 +26,43 @@ PyHamcrest
 
 # Testing
 # ------------------------------------------------------------------------------
-tox==3.9.0
-pyyaml==5.1
+tox
+pyyaml
 
 
-# These requirements are from project template dir and needed for proper tests work only
-django
+# Additional dependencies from internal project template - may be needed for some tests
+pytz
+python-slugify
+Pillow
+rcssmin
+argon2-cffi
+whitenoise
+redis
+celery
+flower
+environs[django]
+django<3.0
+django-model-utils
+django-allauth
+django-compressor
+django-redis
+djangorestframework
+coreapi
+pytest-cov
+pytest-django
+model-mommy
+Werkzeug
+ipdb
+Sphinx
+psycopg2-binary
+pylint-django
+pylint-celery
+django-debug-toolbar
+django-extensions
+django-coverage-plugin
+gunicorn
+Collectfast
+sentry-sdk
+django-storages[boto3]
+django-storages[google]
+django-anymail[mailgun]

@@ -3,6 +3,7 @@
 import logging
 {%- endif %}
 import pathlib
+from typing import Any, Dict, List, Tuple
 
 import environs
 {%- if cookiecutter.use_sentry == 'y' %}
@@ -33,7 +34,7 @@ ENVIRONMENT_PRODUCTION = 'production'
 PROJECT_ENVIRONMENT = env(
     'PROJECT_ENVIRONMENT',
     ENVIRONMENT_PRODUCTION,
-    validate=OneOf([ENVIRONMENT_DEBUG, ENVIRONMENT_TEST, ENVIRONMENT_PRODUCTION]),
+    validate=OneOf([ENVIRONMENT_DEBUG, ENVIRONMENT_TEST, ENVIRONMENT_PRODUCTION]),  # type: ignore
 )
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
@@ -50,6 +51,8 @@ ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['{{ cookiecutter.domai
 TIME_ZONE = env('DJANGO_TIMEZONE', 'UTC')
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = 'en-us'
+# https://docs.djangoproject.com/en/dev/ref/settings/#site-id
+SITE_ID = 1
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
@@ -104,6 +107,7 @@ DJANGO_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
@@ -144,6 +148,11 @@ LOCAL_APPS = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
 
+# MIGRATIONS
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
+MIGRATION_MODULES = {'sites': '{{ cookiecutter.project_slug }}.contrib.sites.migrations'}
+
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#authentication-backends
@@ -173,7 +182,7 @@ else:
     ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
 if PROJECT_ENVIRONMENT in {ENVIRONMENT_DEBUG, ENVIRONMENT_TEST}:
-    AUTH_PASSWORD_VALIDATORS = []
+    AUTH_PASSWORD_VALIDATORS: List[Dict[str, Any]] = []
 else:
     AUTH_PASSWORD_VALIDATORS = [
         {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -312,7 +321,7 @@ loaders = [
     'django.template.loaders.app_directories.Loader',
 ]
 if PROJECT_ENVIRONMENT != ENVIRONMENT_DEBUG:
-    loaders = (
+    loaders = (    # type: ignore
         'django.template.loaders.cached.Loader',
         loaders,
     )
@@ -408,7 +417,7 @@ else:
 # Django Admin URL.
 ADMIN_URL = env('DJANGO_ADMIN_URL', 'admin/')
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = []
+ADMINS: List[Tuple[str, str]] = []
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
 
@@ -572,11 +581,11 @@ sentry_logging = LoggingIntegration(
 )
 
 {%- if cookiecutter.use_celery == 'y' %}
-sentry_sdk.init(
+sentry_sdk.init(  # type: ignore
     dsn=SENTRY_DSN,
     integrations=[sentry_logging, DjangoIntegration(), CeleryIntegration()],
 )
 {% else %}
-sentry_sdk.init(dsn=SENTRY_DSN, integrations=[sentry_logging, DjangoIntegration()])
+sentry_sdk.init(dsn=SENTRY_DSN, integrations=[sentry_logging, DjangoIntegration()])  # type: ignore
 {% endif -%}
 {% endif %}

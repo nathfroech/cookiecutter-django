@@ -6,9 +6,8 @@ from django.test import RequestFactory
 
 from {{ cookiecutter.project_slug }}.users.views import UserRedirectView, UserUpdateView
 
-pytestmark = pytest.mark.django_db
 
-
+@pytest.mark.django_db
 class TestUserUpdateView:
     def test_get_success_url(self, user: settings.AUTH_USER_MODEL, request_factory: RequestFactory):
         view = UserUpdateView()
@@ -30,6 +29,7 @@ class TestUserUpdateView:
         assert_that(view.get_object(), is_(equal_to(user)))
 
 
+@pytest.mark.django_db
 class TestUserRedirectView:
     def test_get_redirect_url(self, user: settings.AUTH_USER_MODEL, request_factory: RequestFactory):
         view = UserRedirectView()

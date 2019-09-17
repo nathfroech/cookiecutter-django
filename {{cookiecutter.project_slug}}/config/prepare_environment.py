@@ -2,10 +2,10 @@ import os
 import pathlib
 import sys
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv  # type: ignore
 
 
-def prepare_environment():
+def prepare_environment() -> None:
     load_dotenv()
 
     # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks if running multiple sites in the
@@ -15,4 +15,4 @@ def prepare_environment():
 
     # This allows easy placement of apps within the interior {{ cookiecutter.project_slug }} directory.
     current_path = pathlib.Path(__file__).parent
-    sys.path.append(current_path.joinpath('{{ cookiecutter.project_slug }}'))
+    sys.path.append(str(current_path.joinpath('{{ cookiecutter.project_slug }}')))
