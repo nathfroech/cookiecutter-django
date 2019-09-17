@@ -77,7 +77,7 @@ use_travisci:
     Indicates whether the project should be configured to use `Travis CI`_.
 
 keep_local_envs_in_vcs:
-    Indicates whether the project's ``.envs/.local/`` should be kept in VCS
+    Indicates whether the project's ``.envs/.local`` should be kept in VCS
     (comes in handy when working in teams where local environment reproducibility
     is strongly encouraged).
     Note: .env(s) are only utilized when Docker Compose and/or Heroku support is enabled.

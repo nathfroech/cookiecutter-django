@@ -1,6 +1,7 @@
 import os
 import pathlib
 import re
+from typing import List
 
 import pytest
 import sh
@@ -60,7 +61,7 @@ def context_combination(
     }
 
 
-def build_files_list(root_dir):
+def build_files_list(root_dir: str) -> List[str]:
     """Build a list containing absolute paths to the generated files."""
     return [
         os.path.join(dirpath, file_path)
@@ -69,7 +70,7 @@ def build_files_list(root_dir):
     ]
 
 
-def check_paths(paths):
+def check_paths(paths: List[str]) -> None:
     """Check all paths have correct substitutions, used by other tests cases."""
     # Assert that no match is found in any of the files
     message_template = 'cookiecutter variable not replaced in {0}'
@@ -97,6 +98,7 @@ def test_project_generation(cookies, context, context_combination):  # noqa: WPS
     assert_that(baked_result.project.isdir())
 
     assert_that(pathlib.Path(project_path).joinpath('setup.cfg').is_file())
+    assert_that(pathlib.Path(project_path).joinpath('.env').is_file())
 
     paths = build_files_list(project_path)
     assert_that(paths)

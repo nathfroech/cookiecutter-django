@@ -25,7 +25,7 @@ First things first.
 
 #. Install development requirements: ::
 
-    $ make update_requirements
+    $ make requirements
 
 #. Create a new PostgreSQL database using createdb_: ::
 
@@ -54,8 +54,6 @@ First things first.
        To help setting up your environment variables, you have a few options:
 
        * create an ``.env`` file in the root of your project and define all the variables you need in it.
-         Then you just need to have ``DJANGO_READ_DOT_ENV_FILE=True`` in your machine and all the variables
-         will be read.
        * Use a local environment manager like `direnv`_
 
 #. Apply migrations: ::
@@ -125,7 +123,7 @@ when developing locally. If you have the appropriate setup on your local machine
 
 CELERY_TASK_ALWAYS_EAGER = False
 
-in /config/settings/local.py
+in /config/settings.py
 
 
 Sass Compilation & Live Reloading

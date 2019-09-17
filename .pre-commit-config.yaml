@@ -82,11 +82,14 @@ repos:
                       conftest|
                       taskapp/celery|
                       users/admin|
+                      users/forms|
                       users/tests/test_forms|
                       users/tests/test_views|
-                      users/urls
+                      users/urls|
+                      users/views
                   )|
-                  config/settings/(base|local|production)
+                  config/settings|
+                  helpers/generate_env_file
               )\.py
           )$
         stages:
@@ -102,11 +105,14 @@ repos:
                       conftest|
                       taskapp/celery|
                       users/admin|
+                      users/forms|
                       users/tests/test_forms|
                       users/tests/test_views|
-                      users/urls
+                      users/urls|
+                      users/views
                   )|
-                  config/settings/(base|local|production)
+                  config/settings|
+                  helpers/generate_env_file
               )\.py
           )$
         stages:
@@ -139,7 +145,7 @@ repos:
         name: Check python files (code style - flake8)
         entry: flake8
         language: system
-        args: [--config=setup.cfg]
+        args: [--config=./setup.cfg]
         types: [python]
         stages:
           - commit
@@ -149,7 +155,16 @@ repos:
         entry: yesqa
         language: system
         types: [python]
-        exclude: '\{\{cookiecutter.project_slug\}\}/config/settings/'
+        exclude: '\{\{cookiecutter.project_slug\}\}/config/settings\.py'
+        stages:
+          - commit
+      - id: mypy
+        name: Check python files (typing - mypy)
+        entry: mypy
+        language: system
+        args: [--config-file, setup.cfg]
+        types: [python]
+        exclude: '\{\{cookiecutter\.project_slug\}\}|docs/conf\.py|setup\.py'
         stages:
           - commit
   # Other specific files and file types checks

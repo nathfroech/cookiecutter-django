@@ -21,6 +21,15 @@ Moved to settings_.
 
 .. _settings: http://cookiecutter-django.readthedocs.io/en/latest/settings.html
 
+All environment-dependent or confidential settings should be declared as environment variables. As an alternative, you
+may create ``.env`` file at project root, which would contain all such variables.
+
+
+Command ``make env_file`` will create such file with defaults, that should be replaced with actual values.
+
+You can use this command for the first production environment setup too - just use a special flag:
+``make env_file --production``.
+
 Basic Commands
 --------------
 
@@ -29,7 +38,7 @@ Updating requirements
 
 Project uses `pip-tools
 <https://github.com/jazzband/pip-tools>`_ for requirements management. If you need to add a new requirement, go to
-``requirements`` directory and change the corresponding \*.in file. After that call ``make update_requirements`` to
+``requirements`` directory and change the corresponding \*.in file. After that call ``make requirements`` to
 compile \*.txt files and synchronize local environment.
 
 For requirements installation in CI or production environments it is enough to simply call ``pip install -r
